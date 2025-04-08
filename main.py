@@ -26,12 +26,12 @@ def format_url(url):
     if not parsed_url.scheme:
         return "https://" + url  # Enforcing HTTPS scheme
     return url
-
 def is_valid_url(url):
-    pattern = re.compile(r"^https://([a-zA-Z0-9.-]+)(\.[a-zA-Z]{2,})?(:\d{1,5})?(/.*)?$")
+    # Updated regex pattern
+    pattern = re.compile(r"^(https?://)([a-zA-Z0-9.-]+)(\.[a-zA-Z]{2,})$")  # Match only domain with no path
     match = pattern.match(url)
     if match:
-        domain = match.group(1)
+        domain = match.group(2)  # Extract the domain part
         if '...' in domain or '..' in domain:
             return False
         return True
@@ -43,7 +43,7 @@ def get_valid_url():
         formatted_url = format_url(url)
         if is_valid_url(formatted_url):
             return formatted_url
-        print("❌ Invalid URL format. Please enter a valid URL (e.g., https://example.com)")
+        print("❌ Invalid URL format. Please enter a valid URL (e.g., https://example.com or http://example.com)")
 
 def choose_scan_type():
     while True:
@@ -69,6 +69,7 @@ def choose_next_action():
         if choice in ["1", "2", "3"]:
             return choice
         print("❌ Invalid choice, please select 1, 2, or 3.")
+
 
 def main():
     print_banner()

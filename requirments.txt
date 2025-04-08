@@ -2,3 +2,6 @@ requests
 beautifulsoup4
 certifi
 pyfiglet
+scikit-learn
+pandas
+joblib

@@ -31,4 +31,3 @@ def save_report(results, report_type):
 # Function to set up logging
 def setup_logger():
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
-
