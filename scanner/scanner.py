@@ -1,8 +1,7 @@
-from bs4 import BeautifulSoup
 import requests
 import json
 import logging
-import certifi  # Added for SSL certificate validation
+import certifi  # For SSL certificate validation
 from urllib.parse import urljoin
 from datetime import datetime
 import os  # For checking if the model file exists
@@ -10,13 +9,15 @@ import joblib  # For loading the model
 import time
 from requests.exceptions import Timeout, ConnectionError
 from train_model import train_model  # import it at the top of scanner.py
-
+from bs4 import BeautifulSoup
+import concurrent.futures  # For concurrent requests
 
 class WebScanner:
-    def __init__(self, url, scan_type, payloads):
+    def __init__(self, url, scan_type, payloads, risk_levels):
         self.url = url
         self.scan_type = scan_type
         self.payloads = payloads
+        self.risk_levels = risk_levels
         self.results = []
         self.session = requests.Session()
 
@@ -27,7 +28,7 @@ class WebScanner:
         else:
             self.model = None
             print("[!] No AI model found. Skipping AI-based predictions.")
-
+            
         logging.basicConfig(filename="scan_log.txt", level=logging.INFO,
                             format="%(asctime)s - %(levelname)s - %(message)s")
 
@@ -37,48 +38,25 @@ class WebScanner:
             self.scan_sensitive_files()
         else:
             for url in urls:
-                self.scan_url(url)
+                self.scan_url(url)  # Uses the optimized scan_url
         self.save_report()
 
     def scan_url(self, url):
-        for payload in self.payloads:
-            retries = 3
-            for i in range(retries):
-                try:
-                    response = self.session.get(url, params={"q": payload}, timeout=15, verify=certifi.where())
-                    if payload in response.text or 'error' in response.text.lower():
-                        self.log_vulnerability(url, payload)
-                    break  # Exit the retry loop if successful
-                except (Timeout, ConnectionError) as e:
-                    print(f"[!] Error: {e} - Retry {i+1}/{retries}")
-                    if i == retries - 1:
-                        print(f"[!] Failed to access {url} after {retries} attempts.")
-                        time.sleep(5)  # Wait 5 seconds before retrying
+        # Start concurrent scanning for each payload
+        with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
+            futures = [executor.submit(self._scan_single_url, url, payload) for payload in self.payloads]
+            for future in concurrent.futures.as_completed(futures):
+                future.result()  # Wait for each task to finish
 
-            # Parse the HTML content into BeautifulSoup after the request
-            soup = BeautifulSoup(response.text, 'html.parser')
-
-            # Look for form elements in the page
-            for form in soup.find_all("form"):
-                action = urljoin(url, form.get("action", ""))
-                method = form.get("method", "get").lower()
-                inputs = form.find_all("input")
-
-                for payload in self.payloads:
-                    # Prepare form data
-                    data = {i.get("name"): payload for i in inputs if i.get("name")}
-                    try:
-                        # Send POST or GET request based on form method
-                        if method == "post":
-                            response = self.session.post(action, data=data, timeout=5, verify=certifi.where())
-                        else:
-                            response = self.session.get(action, params=data, timeout=5, verify=certifi.where())
-
-                        # Check for vulnerability based on payload
-                        if payload in response.text or 'error' in response.text.lower():
-                            self.log_vulnerability(action, payload)
-                    except Exception as e:
-                        logging.error(f"Form scan failed at {action} - {e}")
+    def _scan_single_url(self, url, payload):
+        try:
+            response = self.session.get(url, params={"q": payload}, timeout=5, verify=certifi.where())  # Reduced timeout
+            if payload in response.text or 'error' in response.text.lower():
+                self.log_vulnerability(url, payload, self.risk_levels[self.payloads.index(payload)])
+        except requests.exceptions.Timeout:
+            print(f"Request to {url} timed out. Skipping.")
+        except requests.exceptions.RequestException as e:
+            print(f"Error during request to {url}: {e}")
 
     def scan_sensitive_files(self):
         for file_path in self.payloads:
@@ -86,13 +64,21 @@ class WebScanner:
             try:
                 response = self.session.get(target, timeout=5, verify=certifi.where())  # Using certifi for verification
                 if response.status_code == 200:
-                    self.log_vulnerability(target, "Sensitive File Found")
+                    self.log_vulnerability(target, "Sensitive File Found", "High")
             except Exception as e:
                 logging.error(f"Failed to check {target} - {e}")
 
-    def log_vulnerability(self, url, payload):
+    def log_vulnerability(self, url, payload, risk):
         timestamp = datetime.now().isoformat()
-        entry = {"timestamp": timestamp, "url": url, "vulnerability": self.scan_type, "payload": payload}
+
+        entry = {
+            "timestamp": timestamp,
+            "url": url,
+            "vulnerability": self.scan_type,
+            "payload": payload,
+            "risk": risk  # Use the corresponding risk level
+        }
+
         self.results.append(entry)
         logging.warning(f"[VULNERABILITY] {entry}")
 
@@ -101,6 +87,7 @@ class WebScanner:
             json.dump({"vulnerabilities": self.results}, f, indent=4)
         print("[+] Report saved to scan_report.json")
 
-    # 🔁 Auto-retrain AI model with new data
+        # 🔁 Auto-retrain AI model with new data
         print("[*] Retraining AI model with latest scan data...")
         train_model()
+
