@@ -4,7 +4,7 @@ from scanner.payloads import XSS_PAYLOADS, SQLI_PAYLOADS, SENSITIVE_FILES
 import pyfiglet
 import re
 from urllib.parse import urlparse
-from train_model import train_model  
+from train_model import train_model
 
 def print_banner():
     tool_name_ascii = pyfiglet.figlet_format("INJEX-IA")
@@ -70,15 +70,16 @@ def choose_next_action():
         if choice in ["1", "2", "3"]:
             return choice
         print("❌ Invalid choice, please select 1, 2, or 3.")
+
 def main():
     print_banner()
     url = get_valid_url()
     scan_type, payloads = choose_scan_type()
 
-  # Update: Split the payload string into payload and risk level
-    payloads_with_risk = [p.split(',') for p in payloads]
+    # Update: Split the payload string into payload and risk level
+    payloads_with_risk = [p.split(',', 1) for p in payloads]
     payloads = [p[0].strip() for p in payloads_with_risk]
-    risk_levels = [p[1].strip() for p in payloads_with_risk]
+    risk_levels = [p[1].strip() if len(p) > 1 else 'unknown' for p in payloads_with_risk]
 
     crawler = WebCrawler(url)
     discovered_urls = crawler.crawl()
@@ -97,7 +98,7 @@ def main():
             scanner.risk_levels = risk_levels  # Update risk levels
             scanner.run_scan(discovered_urls)
         elif next_action == "2":
-            main()
+            main()  # This will restart the main function for a new site to scan
             return
         elif next_action == "3":
             print("[+] Exiting...")
@@ -110,6 +111,5 @@ def main():
     else:
         print("[!] Training skipped or failed.")
 
-
 if __name__ == "__main__":
-    main()  
+    main()
