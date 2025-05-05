@@ -1,9 +1,7 @@
-# train_model.py
 import json
 import joblib
 import numpy as np
 import os
-import pandas as pd
 from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -11,17 +9,26 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import (
     accuracy_score,
     precision_recall_fscore_support,
-    classification_report,
-    confusion_matrix
+    classification_report
 )
 
-def train_model():
+def train_model(filter_type=None):
     try:
         with open('scan_report.json', 'r') as f:
             data = json.load(f)
 
-        labels = [f"{entry['vulnerability']}_{entry.get('risk', 'medium')}" for entry in data["vulnerabilities"]]
-        payloads = [entry["payload"] for entry in data["vulnerabilities"]]
+        entries = data["vulnerabilities"]
+
+        # ✅ Filter entries by vulnerability type if specified
+        if filter_type:
+            entries = [entry for entry in entries if entry["vulnerability"] == filter_type]
+
+        if not entries:
+            print(f"[!] No entries found for type '{filter_type}'. Skipping training.")
+            return None
+
+        labels = [f"{entry['vulnerability']}_{entry.get('risk', 'medium')}" for entry in entries]
+        payloads = [entry["payload"] for entry in entries]
 
         vectorizer = CountVectorizer()
         X = vectorizer.fit_transform(payloads).toarray()
@@ -34,57 +41,55 @@ def train_model():
 
         y_pred = clf.predict(X_test)
 
-        # === Metrics ===
+        # ✅ Use only labels present in this filtered dataset
+        used_labels = sorted(set(y))  # only labels that actually appear in this scan
+
+        # ✅ Compute metrics using filtered labels
         accuracy = accuracy_score(y_test, y_pred)
-        precision, recall, f1, _ = precision_recall_fscore_support(y_test, y_pred, average='weighted')
-        report = classification_report(y_test, y_pred, output_dict=True)
-        conf_matrix = confusion_matrix(y_test, y_pred)
+        precision, recall, f1, _ = precision_recall_fscore_support(
+            y_test, y_pred, average='weighted', zero_division=0
+        )
 
-        print(f"[+] Accuracy: {accuracy * 100:.2f}%")
+        report = classification_report(
+            y_test, y_pred,
+            labels=used_labels,
+            output_dict=True,
+            zero_division=0
+        )
 
-        # === Pretty Confusion Matrix Display ===
-        labels_sorted = sorted(list(set(y)))
-        conf_df = pd.DataFrame(conf_matrix, index=labels_sorted, columns=labels_sorted)
 
-        print("\nConfusion Matrix:\n")
-        print(conf_df.to_string())
-
-        # === Save Confusion Matrix to Markdown File ===
-        with open("confusion_matrix.md", "w") as f:
-            f.write("# Confusion Matrix\n\n")
-            f.write(conf_df.to_markdown())
-        print("[+] Confusion matrix saved as 'confusion_matrix.md'")
-
-        # === Save Model and Vectorizer ===
+        # ✅ Save model and vectorizer
         joblib.dump(clf, 'vulnerability_model.pkl')
         joblib.dump(vectorizer, 'vectorizer.pkl')
         print("[+] Model and vectorizer saved successfully.")
 
-        # === Save Vocabulary ===
+        # ✅ Save vectorizer vocabulary
         with open('vectorizer_vocab.txt', 'w', encoding='utf-8') as f:
             f.write("Vectorizer Vocabulary:\n")
             for word, index in vectorizer.vocabulary_.items():
                 f.write(f"{word}: {index}\n")
         print("[+] Saved vectorizer_vocab.txt")
 
-        # === Save All Metrics to metrics.json ===
+        # ✅ Save metrics to metrics.json
         metrics_entry = {
             "timestamp": datetime.now().isoformat(),
+            "filter_type": filter_type,
             "accuracy": accuracy,
             "precision": precision,
             "recall": recall,
             "f1_score": f1,
-            "labels": labels_sorted,
-            "classification_report": report,
-            "confusion_matrix": conf_matrix.tolist()
+            "labels": used_labels,
+            "classification_report": report
         }
 
         metrics_file = "metrics.json"
-        if os.path.exists(metrics_file):
-            with open(metrics_file, "r") as f:
-                existing_metrics = json.load(f)
-        else:
-            existing_metrics = []
+        existing_metrics = []
+        if os.path.exists(metrics_file) and os.path.getsize(metrics_file) > 0:
+            try:
+                with open(metrics_file, "r") as f:
+                    existing_metrics = json.load(f)
+            except json.JSONDecodeError:
+                print("[!] Warning: metrics.json is invalid. Starting fresh.")
 
         existing_metrics.append(metrics_entry)
 
