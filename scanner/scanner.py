@@ -46,7 +46,7 @@ class WebScanner:
         try:
             payload = item["payload"]
             risk = item.get("risk", "unknown")
-            response = self.session.get(url, params={"q": payload}, timeout=5, verify=certifi.where())
+            response = self.session.get(url, params={"q": payload}, timeout=15, verify=certifi.where())
 
             if payload in response.text or 'error' in response.text.lower():
                 self.log_vulnerability(url, payload, risk)

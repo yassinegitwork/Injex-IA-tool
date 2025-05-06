@@ -64,19 +64,8 @@ XSS_PAYLOADS = [
     {"payload": "<b onmousedown=alert('XSS')>Click</b>", "risk": "low"},
     {"payload": "'><img src=x onerror=alert('XSS')>", "risk": "high"},
     {"payload": "<iframe src='javascript:alert(\"XSS\")'></iframe>", "risk": "high"},
-    {"payload": "<body onload=alert('XSS')>", "risk": "high"},
-    {"payload": "<body onafterprint=alert(1)>", "risk": "low"},
-    {"payload": "<input onauxclick=alert(1)>", "risk": "medium"},
-    {"payload": "<input onchange=alert(1) value=xss>", "risk": "medium"},
-    {"payload": "<xss onclick=\"alert(1)\" style=display:block>test</xss>", "risk": "high"},
-    {"payload": "<xss onkeypress=\"alert(1)\" contenteditable style=display:block>test</xss>", "risk": "high"},
-    {"payload": "<a onpaste=\"alert(1)\" contenteditable>test</a>", "risk": "medium"},
-    {"payload": "<form onreset=alert(1)><input type=reset>", "risk": "low"},
-    {"payload": "<title><img title=\"</title><img src onerror=alert(1)>\"></title>", "risk": "high"},
-    {"payload": "<script>alert`1`</script>", "risk": "high"}
+    {"payload": "<body onload=alert('XSS')>", "risk": "high"}
 ]
-
-
 
 
 
@@ -219,5 +208,7 @@ SENSITIVE_FILES = [
     {"payload": "/CHANGELOG.md", "risk": "low"},
     {"payload": "/README.md", "risk": "low"},
     {"payload": "/LICENSE", "risk": "low"},
-    {"payload": "/COPYING", "risk": "low"}
+    {"payload": "/COPYING", "risk": "low"},
+    {"payload": "/robots.txt", "risk": "low"}
+
 ]
