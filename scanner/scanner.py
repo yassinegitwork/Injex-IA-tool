@@ -43,15 +43,17 @@ class WebScanner:
                 future.result()
 
     def _scan_single_url(self, url, item):
+
         try:
             payload = item["payload"]
             risk = item.get("risk", "unknown")
-            response = self.session.get(url, params={"q": payload}, timeout=15, verify=certifi.where())
+            response = self.session.get(url, params={"q": payload}, timeout=30, verify=certifi.where())
 
             if payload in response.text or 'error' in response.text.lower():
                 self.log_vulnerability(url, payload, risk)
         except requests.exceptions.RequestException as e:
-            print(f"Error during request to {url}: {e}")
+             logging.info(f"[IGNORED] Could not access {url}: {e}")
+
 
     def scan_sensitive_files(self):
         for item in self.payloads:
@@ -59,7 +61,7 @@ class WebScanner:
             risk = item.get("risk", "unknown")
             target = urljoin(self.url, file_path)
             try:
-                response = self.session.get(target, timeout=15, verify=certifi.where())
+                response = self.session.get(target, timeout=30, verify=certifi.where())
                 if response.status_code == 200:
                     self.log_vulnerability(target, file_path, risk)
             except Exception as e:

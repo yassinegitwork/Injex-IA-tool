@@ -6,10 +6,8 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.webdriver.edge.service import Service as EdgeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from selenium.webdriver.edge.options import Options as EdgeOptions
 
 class WebCrawler:
     def __init__(self, base_url):
@@ -22,9 +20,8 @@ class WebCrawler:
         print("[*] Initializing browser driver...")
 
         driver_paths = {
-            "chrome": os.path.join("drivers", "chromedriver.exe"),
-            "firefox": os.path.join("drivers", "geckodriver.exe"),
-            "edge": os.path.join("drivers", "msedgedriver.exe"),
+            "chrome": "/usr/local/bin/chromedriver",
+            "firefox": "/usr/local/bin/geckodriver"
         }
 
         # Try Chrome
@@ -33,7 +30,6 @@ class WebCrawler:
             options.add_argument("--headless")
             options.add_argument("--disable-gpu")
             options.add_argument("--no-sandbox")
-            options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"  # Set the binary location for Chrome
             service = ChromeService(executable_path=driver_paths["chrome"])
             driver = webdriver.Chrome(service=service, options=options)
             print("[+] Using Selenium Chrome driver.")
@@ -45,7 +41,6 @@ class WebCrawler:
         try:
             options = FirefoxOptions()
             options.add_argument("--headless")
-            options.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"  # Set the binary location for Firefox
             service = FirefoxService(executable_path=driver_paths["firefox"])
             driver = webdriver.Firefox(service=service, options=options)
             print("[+] Using Selenium Firefox driver.")
@@ -53,40 +48,23 @@ class WebCrawler:
         except Exception as e:
             print(f"[!] Firefox driver failed: {e}")
 
-        # Try Edge
-        try:
-            options = EdgeOptions()
-            options.add_argument("--headless")
-            options.binary_location = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"  # Set the binary location for Edge
-            service = EdgeService(executable_path=driver_paths["edge"])
-            driver = webdriver.Edge(service=service, options=options)
-            print("[+] Using Selenium Edge driver.")
-            return driver
-        except Exception as e:
-            print(f"[!] Edge driver failed: {e}")
-
-        # Fall back to None
         print("[!] All Selenium drivers failed. Falling back to requests + BeautifulSoup mode.")
         return None
 
     def make_request(self, url, retries=3, timeout=5):
-        """
-        Attempts to make a request to the given URL with retries and a timeout.
-        Will retry the request up to 'retries' times if it encounters a timeout or connection issue.
-        """
         attempt = 0
         while attempt < retries:
             try:
                 print(f"[*] Attempting to request: {url} (Attempt {attempt + 1} of {retries})")
                 response = requests.get(url, timeout=timeout)
-                response.raise_for_status()  # Raise HTTPError for bad responses
+                response.raise_for_status()
                 return response
             except requests.exceptions.Timeout:
                 print(f"[!] Timeout occurred for {url}. Retrying...")
             except requests.exceptions.RequestException as e:
                 print(f"[!] Request failed for {url}: {e}")
             attempt += 1
-            time.sleep(2)  # Wait before retrying
+            time.sleep(2)
         return None
 
     def crawl(self, max_depth=2):
@@ -102,10 +80,9 @@ class WebCrawler:
         self.visited.add(url)
 
         try:
-            # Use make_request() to handle the HTTP requests
             if self.driver:
                 self.driver.get(url)
-                time.sleep(1)  # wait for JS to load
+                time.sleep(1)
                 page_source = self.driver.page_source
             else:
                 response = self.make_request(url)
