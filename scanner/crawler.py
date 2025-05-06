@@ -20,8 +20,9 @@ class WebCrawler:
         print("[*] Initializing browser driver...")
 
         driver_paths = {
-            "chrome": "/usr/local/bin/chromedriver",
-            "firefox": "/usr/local/bin/geckodriver"
+            "chrome": os.path.join("drivers", "chromedriver.exe"),
+            "firefox": os.path.join("drivers", "geckodriver.exe"),
+            "edge": os.path.join("drivers", "msedgedriver.exe"),
         }
 
         # Try Chrome
@@ -30,6 +31,7 @@ class WebCrawler:
             options.add_argument("--headless")
             options.add_argument("--disable-gpu")
             options.add_argument("--no-sandbox")
+            options.binary_location = r"C:\Program Files\Google\Chrome\Application\chrome.exe"  # Set the binary location for Chrome
             service = ChromeService(executable_path=driver_paths["chrome"])
             driver = webdriver.Chrome(service=service, options=options)
             print("[+] Using Selenium Chrome driver.")
