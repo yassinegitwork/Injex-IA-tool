@@ -23,9 +23,9 @@ Follow these simple steps to launch INJEX-IA on your Kali Linux machine.
 
 Start by cloning the repository from GitHub to your local machine:
 
-```bash
 git clone https://github.com/your-repo/INJEX-IA.git
 cd INJEX-IA
+
 2. Install Dependencies
 INJEX-IA uses several Python libraries to function. Install them using pip:
 pip install -r requirements.txt
