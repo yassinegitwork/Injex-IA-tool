@@ -1,5 +1,14 @@
  INJEX-IA: Web Vulnerability Scanner Tool
 
+
+
+![screen6](https://github.com/user-attachments/assets/d9337c06-4d2a-4702-beb7-c58fd73fde5a)
+
+
+
+
+ 
+
 ## Tool Description
 
 **INJEX-IA** is a powerful, automated web vulnerability scanner designed for security researchers and developers. It helps to identify common vulnerabilities such as Cross-Site Scripting (XSS), SQL Injection (SQLi), and sensitive file exposure in web applications. 
