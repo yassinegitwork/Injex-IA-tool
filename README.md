@@ -28,12 +28,12 @@ INJEX-IA is a comprehensive tool for automating vulnerability scanning, detectin
 
 Follow these simple steps to launch INJEX-IA on your Kali Linux machine.
 
-### 1. **Clone the Repository**
+1. **Clone the Repository**
 
 Start by cloning the repository from GitHub to your local machine:
 
-git clone https://github.com/your-repo/INJEX-IA.git
-cd INJEX-IA
+--git clone https://github.com/yassinegitwork/Injex-IA-tool.git
+--cd INJEX-IA
 
 2. Install Dependencies
 INJEX-IA uses several Python libraries to function. Install them using pip:
