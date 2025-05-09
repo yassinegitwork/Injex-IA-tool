@@ -32,7 +32,8 @@ Follow these simple steps to launch INJEX-IA on your Kali Linux machine.
 
 Start by cloning the repository from GitHub to your local machine:
 
---git clone https://github.com/yassinegitwork/Injex-IA-tool.git/n
+--git clone https://github.com/yassinegitwork/Injex-IA-tool.git
+
 cd INJEX-IA
 
 2. **Install Dependencies**
