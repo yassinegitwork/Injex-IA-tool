@@ -1,3 +1,4 @@
+import asyncio
 from scanner.scanner import WebScanner
 from scanner.crawler import WebCrawler
 from scanner.payloads import XSS_PAYLOADS, SQLI_PAYLOADS, SENSITIVE_FILES
@@ -76,7 +77,7 @@ def main():
     scan_type, payloads = choose_scan_type()
 
     crawler = WebCrawler(url)
-    discovered_urls = crawler.crawl()
+    discovered_urls = asyncio.run(crawler.crawl())
 
     scanner = WebScanner(url, scan_type, payloads)
     scanner.run_scan(discovered_urls)
