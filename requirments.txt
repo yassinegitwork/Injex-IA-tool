@@ -5,6 +5,5 @@ pyfiglet
 scikit-learn
 pandas
 joblib
-re 
 Playwright
 

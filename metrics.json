@@ -320,5 +320,51 @@
                 "support": 30.0
             }
         }
+    },
+    {
+        "timestamp": "2025-05-15T01:42:41.386332",
+        "filter_type": "xss",
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1_score": 1.0,
+        "labels": [
+            "xss_high",
+            "xss_low",
+            "xss_medium"
+        ],
+        "classification_report": {
+            "xss_high": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 312.0
+            },
+            "xss_low": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 135.0
+            },
+            "xss_medium": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 192.0
+            },
+            "accuracy": 1.0,
+            "macro avg": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 639.0
+            },
+            "weighted avg": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1-score": 1.0,
+                "support": 639.0
+            }
+        }
     }
 ]
