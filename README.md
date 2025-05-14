@@ -1,117 +1,94 @@
-##INJEX-IA: Web Vulnerability Scanner Tool
+INJEX-IA: Web Vulnerability Scanner Tool
 
 
-**INJEX-IA** is a powerful, automated web vulnerability scanner designed for security researchers and developers. It helps identify common vulnerabilities such as Cross-Site Scripting (XSS), SQL Injection (SQLi), and sensitive file exposure in web applications.
-=======
-
-
-![screen7](https://github.com/user-attachments/assets/0c036f2e-9961-42e3-8f73-38ec28eb69af)
+![screen7](https://github.com/user-attachments/assets/7d4928b5-0db3-4033-87b2-e1d5fe188f01)
 
 
 
 
- 
+Tool Description
+INJEX-IA is a powerful, automated web vulnerability scanner designed for security researchers and developers. It helps identify common vulnerabilities such as:
 
-**Tool Description**
+Cross-Site Scripting (XSS)
 
-**The tool is modular, offering components for:**
+SQL Injection (SQLi)
 
-**-Web Crawling:** Automatically navigates websites, extracts links, forms, and input fields.
+Sensitive file exposure
 
-**-Payload Injection:** Injects predefined payloads to test for XSS, SQLi, and sensitive file exposures.
+The tool includes the following core modules:
+Web Crawling: Automatically navigates websites, extracts links, forms, and input fields.
 
-**-Vulnerability Detection:** Analyzes HTTP responses and flags vulnerabilities with severity levels using AI models.
+Payload Injection: Injects predefined payloads to test for XSS, SQLi, and sensitive file exposures.
 
-**-AI-Based Scanning:** The AI model improves detection accuracy by learning from scan data over time.
+Vulnerability Detection: Analyzes HTTP responses and flags vulnerabilities with severity levels using AI models.
 
-**-Reporting:** Generates comprehensive reports in JSON format, including vulnerability details and risk levels.
+AI-Based Scanning: Continuously improves detection accuracy by learning from scan results.
 
-INJEX-IA is a comprehensive tool for automating vulnerability scanning, detecting weaknesses in web applications, and assisting in improving security measures.
+Reporting: Generates comprehensive reports in JSON format, including vulnerability types, affected URLs, payloads, and risk levels.
 
+How to Run INJEX-IA on Kali Linux
+Follow these steps to install and run INJEX-IA using Playwright:
 
-
-**How to Run INJEX-IA on Kali Linux** 
-**Follow these steps to install and run INJEX-IA using Playwright:**
-
-**1. Clone the Repository**
-git clone https://github.com/your-repo/INJEX-IA.git
+1. Clone the Repository
+git clone https://github.com/yassinegitwork/Injex-IA-tool.git
 cd INJEX-IA
 
-**2. Install Python Dependencies**
-=======
-1. **Clone the Repository**
-
-Start by cloning the repository from GitHub to your local machine:
-
-**git clone https://github.com/yassinegitwork/Injex-IA-tool.git**
-
-**cd INJEX-IA**
-
-2. **Install Dependencies**
-**INJEX-IA uses several Python libraries to function. Install them using pip:**
+3. Install Python Dependencies
 pip install -r requirements.txt
-This installs all the necessary libraries including Playwright.
+This installs all the necessary Python libraries including Playwright.
 
+3. Install and Configure Playwright
+INJEX-IA uses Playwright for browser automation, supporting Chromium, Firefox, and WebKit.
 
-**3. Install and Configure Playwright**
-INJEX-IA uses Playwright for browser automation. Playwright supports Chromium, Firefox, and WebKit.
+Install Playwright and its browser binaries by running:
 
-**Run the following to install Playwright and its browser engines:**
 pip install playwright
 python -m playwright install
-✅ This will automatically download Chromium, Firefox, and WebKit browsers.
+✅ This command will automatically download the required browsers, so no manual setup of ChromeDriver or GeckoDriver is needed.
 
-3. **Install Web Browser Drivers**
-For browser automation, INJEX-IA requires ChromeDriver (for Chrome) and GeckoDriver (for Firefox). Make sure you install the correct version of each driver based on the browser version you are using.
-
-3.1 **Installing ChromeDriver**
-To install ChromeDriver on Kali Linux:
-sudo apt-get update
-sudo apt-get install chromium-chromedriver
-Important Note:
-Check your Chrome version before installing ChromeDriver to ensure compatibility.
-
-**4. (Optional) Running Browsers in Non-Headless Mode**
-Playwright runs browsers in headless mode (no UI) by default. To see the browser window while crawling or testing, you can edit the code like this:
-python
+4. (Optional) Enable Browser GUI for Debugging
+By default, Playwright runs browsers in headless mode (no UI). To run with a visible browser window (for debugging or visual confirmation), edit the crawler code to set:
 
 browser = await p.chromium.launch(headless=False)
-This can help with debugging or visual verification during scans.
-
 Running INJEX-IA
-**After setup, start the tool by running:**
+Once setup is complete, run the tool:
+
+
 python main.py
+You will be prompted to enter:
 
-**You will be prompted to enter:**
 The target URL
+
 The type of scan: XSS, SQL Injection, or Sensitive Files
-Understanding Scan Results
 
-**After a scan completes, two files will be generated:**
-**1. scan_report.json**
-**This file contains:**
-All findings (true positives and false positives)
-Vulnerability types
-Risk levels
-Affected URLs
-Payloads used
+Scan Results
+After a scan completes, the tool will generate two important files:
 
-View it using:
+1. scan_report.json
+Contains:
+
+All detected vulnerabilities (true positives and false positives)
+
+Vulnerability types and severity
+
+Affected URLs and payloads used
+
+To view:
 cat scan_report.json
 
-**2. metrics.json**
-This file contains scan performance metrics that help:
-Monitor scanning effectiveness
-Support future AI model retraining
-**View it using:**
+2. metrics.json
+Contains:
+Performance metrics of the scan
+Data useful for AI model improvement
+
+To view:
 cat metrics.json
 
+Notes
+✅ No driver setup required — Playwright handles browsers internally.
 
-**Notes**
-Playwright Binaries: No need to manually install ChromeDriver or GeckoDriver. Playwright manages and runs the browsers internally.
+🔁 Cross-browser support — Easily switch between Chromium, Firefox, or WebKit.
 
-Cross-Browser Support: You can easily switch between Chromium, Firefox, or WebKit by changing a single line in the crawler configuration.
-
-Environment Variables: No extra environment configuration is required for Playwright. It works out of the box on Kali Linux.
+🛠️ Runs out of the box on Kali Linux without any special environment variables or manual configurations.
 
 Enjoy scanning securely with INJEX-IA — Powered by Yassine Soussi.
