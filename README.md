@@ -51,14 +51,6 @@ python -m playwright install
 
 ✅ This command will automatically download the required browsers — no need to install ChromeDriver or GeckoDriver manually.
 
----
-
-## **🧪 Optional: Enable Browser GUI for Debugging**
-By default, Playwright runs browsers in headless mode (no UI). To run with a visible browser window (for debugging or visual confirmation), edit the crawler code to set:
-
-```python
-browser = await p.chromium.launch(headless=False)
-```
 
 ---
 
