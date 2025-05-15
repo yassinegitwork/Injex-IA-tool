@@ -78,6 +78,10 @@ which msedgedriver
 These commands should output paths like /usr/local/bin/chromedriver if the drivers are installed and accessible in your system PATH.
 
 🌐 Manual Web Browser Driver Management  
+**Updating system and installing required tools**
+sudo apt update
+sudo apt install -y wget curl unzip tar
+
 # ChromeDriver (latest stable)
 CHROME_VER=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
 wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VER -O chrome_ver.txt
