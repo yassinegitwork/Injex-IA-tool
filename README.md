@@ -77,6 +77,31 @@ which msedgedriver
 
 These commands should output paths like /usr/local/bin/chromedriver if the drivers are installed and accessible in your system PATH.
 
+🌐 Manual Web Browser Driver Management  
+# ChromeDriver (latest stable)
+CHROME_VER=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VER -O chrome_ver.txt
+CHROME_DRIVER_VER=$(cat chrome_ver.txt)
+wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VER/chromedriver_linux64.zip
+unzip -o chromedriver_linux64.zip
+sudo mv chromedriver /usr/local/bin/chromedriver
+sudo chmod +x /usr/local/bin/chromedriver
+
+# GeckoDriver (Firefox)
+GECKO_VER=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
+wget https://github.com/mozilla/geckodriver/releases/download/v$GECKO_VER/geckodriver-v$GECKO_VER-linux64.tar.gz
+tar -xzf geckodriver-v$GECKO_VER-linux64.tar.gz
+sudo mv geckodriver /usr/local/bin/geckodriver
+sudo chmod +x /usr/local/bin/geckodriver
+
+# EdgeDriver
+EDGE_VER=$(curl -s https://msedgedriver.azureedge.net/LATEST_STABLE)
+wget https://msedgedriver.azureedge.net/$EDGE_VER/edgedriver_linux64.zip
+unzip -o edgedriver_linux64.zip
+sudo mv msedgedriver /usr/local/bin/msedgedriver
+sudo chmod +x /usr/local/bin/msedgedriver
+
+
 🚀 Running INJEX-IA  
 Once setup is complete, start the tool with:
 
@@ -90,6 +115,10 @@ You will be prompted to enter:
 - The type of scan: XSS, SQL Injection, or Sensitive Files
 - The browser to use: chrome, firefox, or edge
 
+Example:
+
+```bash
+python main.py --url https://target.com --browser chrome
 ```
 
 📁 Scan Results  
