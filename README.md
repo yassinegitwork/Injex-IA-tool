@@ -37,6 +37,7 @@ cd Injex-IA-tool
 ```bash
 pip install -r requirements.txt
 ```
+
 This installs all the necessary Python libraries including selenium.
 
 ### 3. Install webdriver-manager for Automatic Driver Management
@@ -77,36 +78,83 @@ which msedgedriver
 
 These commands should output paths like /usr/local/bin/chromedriver if the drivers are installed and accessible in your system PATH.
 
-🌐 Manual Web Browser Driver Management  
-**Updating system and installing required tools**
-sudo apt update
-sudo apt install -y wget curl unzip tar
+---
 
-# ChromeDriver (latest stable)
-CHROME_VER=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-wget -N https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VER -O chrome_ver.txt
-CHROME_DRIVER_VER=$(cat chrome_ver.txt)
-wget -N https://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VER/chromedriver_linux64.zip
-unzip -o chromedriver_linux64.zip
-sudo mv chromedriver /usr/local/bin/chromedriver
-sudo chmod +x /usr/local/bin/chromedriver
+### 🌐 Manual Web Browser Driver Management
 
-# GeckoDriver (Firefox)
-GECKO_VER=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-wget https://github.com/mozilla/geckodriver/releases/download/v$GECKO_VER/geckodriver-v$GECKO_VER-linux64.tar.gz
-tar -xzf geckodriver-v$GECKO_VER-linux64.tar.gz
-sudo mv geckodriver /usr/local/bin/geckodriver
-sudo chmod +x /usr/local/bin/geckodriver
+To enable full browser-based crawling and scanning using **Selenium**, install the appropriate drivers for your browsers.
 
-# EdgeDriver
-EDGE_VER=$(curl -s https://msedgedriver.azureedge.net/LATEST_STABLE)
-wget https://msedgedriver.azureedge.net/$EDGE_VER/edgedriver_linux64.zip
-unzip -o edgedriver_linux64.zip
-sudo mv msedgedriver /usr/local/bin/msedgedriver
-sudo chmod +x /usr/local/bin/msedgedriver
+---
 
+### 🚀 ChromeDriver (for Google Chrome)
 
-🚀 Running INJEX-IA  
+1. **Check your Chrome version**:
+   ```bash
+   google-chrome --version
+   ```
+
+2. **Visit the official ChromeDriver download page**:  
+   👉 https://chromedriver.chromium.org/downloads
+
+3. **Download and install the driver**:
+   ```bash
+   wget https://chromedriver.storage.googleapis.com/<version>/chromedriver_linux64.zip
+   unzip chromedriver_linux64.zip
+   chmod +x chromedriver
+   sudo mv chromedriver /usr/local/bin/
+   ```
+
+> 🔁 Replace `<version>` with the ChromeDriver version matching your installed Chrome (e.g., `119.0.6045.105`).
+
+---
+
+### 🦊 GeckoDriver (for Mozilla Firefox)
+
+1. **Check your Firefox version**:
+   ```bash
+   firefox --version
+   ```
+
+2. **Visit the official GeckoDriver releases page**:  
+   👉 https://github.com/mozilla/geckodriver/releases
+
+3. **Download and install the driver**:
+   ```bash
+   wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+   tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
+   chmod +x geckodriver
+   sudo mv geckodriver /usr/local/bin/
+   ```
+
+> ✅ You can adjust the version (`v0.34.0`) depending on your needs. Always use a version compatible with your Firefox.
+
+---
+
+**Change in Selenium Driver Initialization for Kali Linux**
+
+**Important:**
+
+In the Kali Linux version of the tool, the Selenium WebDriver initialization removes the explicit binary_location setting for browsers such as Chrome and Firefox.
+
+### ✅ Verify Driver Installation
+
+After installing both drivers, make sure they are properly located in your system path:
+
+```bash
+which chromedriver
+which geckodriver
+```
+
+Expected output:
+```
+/usr/local/bin/chromedriver
+/usr/local/bin/geckodriver
+```
+
+---
+
+## 🚀 Running INJEX-IA
+
 Once setup is complete, start the tool with:
 
 ```bash
@@ -125,10 +173,13 @@ Example:
 python main.py --url https://target.com --browser chrome
 ```
 
-📁 Scan Results  
+---
+
+## 📁 Scan Results
+
 After a scan completes, the tool will generate two important files:
 
-1. scan_report.json  
+### 1. scan_report.json  
 Contains:
 
 - All detected vulnerabilities (true positives and false positives)
@@ -141,7 +192,7 @@ To view:
 cat scan_report.json
 ```
 
-2. metrics.json  
+### 2. metrics.json  
 Contains:
 
 - Performance metrics of the scan
@@ -153,10 +204,15 @@ To view:
 cat metrics.json
 ```
 
-📌 Notes  
+---
+
+## 📌 Notes
+
 ✅ Selenium-based scanning with real browser control  
 🔄 Supports Chrome, Firefox, and Edge browsers  
 🔧 Drivers are automatically managed by webdriver-manager and typically saved in /usr/local/bin  
 🛡️ Optimized for penetration testing and secure development workflows
 
-Enjoy scanning securely with INJEX-IA — Powered by Yassine Soussi.
+---
+
+**Enjoy scanning securely with INJEX-IA — Powered by Yassine Soussi**
