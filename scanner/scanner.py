@@ -29,49 +29,43 @@ class WebScanner:
 
     def run_scan(self, urls):
         print(f"[+] Running {self.scan_type.upper()} scan on {len(urls)} discovered pages...")
-
         if self.scan_type == "sensitive":
             self.scan_sensitive_files()
         else:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
-                for url in urls:
-                    executor.submit(self.scan_url, url)
-
+            for url in urls:
+                self.scan_url(url)
         self.save_report()
 
     def scan_url(self, url):
-        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
             futures = [executor.submit(self._scan_single_url, url, item) for item in self.payloads]
             for future in concurrent.futures.as_completed(futures):
                 future.result()
 
     def _scan_single_url(self, url, item):
+
         try:
             payload = item["payload"]
             risk = item.get("risk", "unknown")
-            response = self.session.get(url, params={"q": payload}, timeout=15, verify=certifi.where())
+            response = self.session.get(url, params={"q": payload}, timeout=30, verify=certifi.where())
 
             if payload in response.text or 'error' in response.text.lower():
                 self.log_vulnerability(url, payload, risk)
-        except requests.exceptions.RequestException:
-            pass  # Silent fail for unreachable URLs
+        except requests.exceptions.RequestException as e:
+             logging.info(f"[IGNORED] Could not access {url}: {e}")
+
 
     def scan_sensitive_files(self):
-        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
-            futures = [executor.submit(self._scan_sensitive_file, item) for item in self.payloads]
-            for future in concurrent.futures.as_completed(futures):
-                future.result()
-
-    def _scan_sensitive_file(self, item):
-        file_path = item["payload"]
-        risk = item.get("risk", "unknown")
-        target = urljoin(self.url, file_path)
-        try:
-            response = self.session.get(target, timeout=10, verify=certifi.where())
-            if response.status_code == 200:
-                self.log_vulnerability(target, file_path, risk)
-        except requests.RequestException:
-            pass
+        for item in self.payloads:
+            file_path = item["payload"]
+            risk = item.get("risk", "unknown")
+            target = urljoin(self.url, file_path)
+            try:
+                response = self.session.get(target, timeout=30, verify=certifi.where())
+                if response.status_code == 200:
+                    self.log_vulnerability(target, file_path, risk)
+            except Exception as e:
+                logging.error(f"Failed to check {target} - {e}")
 
     def log_vulnerability(self, url, payload, risk):
         timestamp = datetime.now().isoformat()
@@ -91,4 +85,4 @@ class WebScanner:
         print("[+] Report saved to scan_report.json")
 
         print("[*] Retraining AI model with latest scan data...")
-        train_model(filter_type=self.scan_type)
+        train_model(filter_type=self.scan_type) 

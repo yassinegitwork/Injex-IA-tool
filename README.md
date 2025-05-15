@@ -1,11 +1,11 @@
 
-# **INJEX-IA: Web Vulnerability Scanner Tool**
+# INJEX-IA: Web Vulnerability Scanner Tool
 
 ![screen7](https://github.com/user-attachments/assets/7d4928b5-0db3-4033-87b2-e1d5fe188f01)
 
 ---
 
-## **🔍 Tool Description**
+## 🔍 Tool Description
 
 **INJEX-IA** is a powerful, automated web vulnerability scanner designed for security researchers and developers. It helps identify common vulnerabilities such as:
 
@@ -13,7 +13,7 @@
 - **SQL Injection (SQLi)**
 - **Sensitive File Exposure**
 
-### **The tool includes the following core modules:**
+### The tool includes the following core modules:
 
 - **Web Crawling**: Automatically navigates websites, extracts links, forms, and input fields.
 - **Payload Injection**: Injects predefined payloads to test for XSS, SQLi, and sensitive file exposures.
@@ -23,39 +23,61 @@
 
 ---
 
-## **⚙️ Installation Guide for Kali Linux**
+## ⚙️ Installation Guide for Kali Linux (Selenium-Based)
 
-Follow these steps to install and run **INJEX-IA** using **Playwright**:
+Follow these steps to install and run **INJEX-IA** using **Selenium** with automatic browser driver management:
 
-### **1. Clone the Repository**
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/yassinegitwork/Injex-IA-tool.git
-cd INJEX-IA
+cd Injex-IA-tool
 ```
 
-### **2. Install Python Dependencies**
+### 2. Install Python Dependencies
 ```bash
 pip install -r requirements.txt
 ```
-This installs all the necessary Python libraries including Playwright.
+This installs all the necessary Python libraries including selenium.
 
-### **3. Install and Configure Playwright**
-INJEX-IA uses Playwright for browser automation, supporting Chromium, Firefox, and WebKit.
-
-Run the following to install Playwright and download its required browser binaries:
-
+### 3. Install webdriver-manager for Automatic Driver Management
 ```bash
-pip install playwright
-python -m playwright install
+pip install webdriver-manager
 ```
 
-✅ This command will automatically download the required browsers — no need to install ChromeDriver or GeckoDriver manually.
+🌐 Automatic Web Browser Driver Management  
+Thanks to webdriver-manager, INJEX-IA automatically downloads and manages the correct versions of browser drivers (ChromeDriver, GeckoDriver, EdgeDriver) matching your installed browsers.
 
+Drivers are typically saved in system paths like /usr/local/bin or managed internally by the package.
 
----
+You do NOT need to manually download or install any drivers anymore!
 
-## **🚀 Running INJEX-IA**
+🔧 Browser Executable Paths on Kali Linux  
+Make sure Selenium can find your installed browsers by specifying their paths in the code. Typical paths for Kali Linux are:
 
+- Google Chrome: /usr/bin/google-chrome
+- Mozilla Firefox: /usr/bin/firefox
+- Microsoft Edge: /usr/bin/microsoft-edge
+
+You can verify these paths by running:
+
+```bash
+which google-chrome
+which firefox
+which microsoft-edge
+```
+
+🛠️ Verify Browser Driver Paths  
+If you want to verify where your browser drivers are installed, try running:
+
+```bash
+which chromedriver
+which geckodriver
+which msedgedriver
+```
+
+These commands should output paths like /usr/local/bin/chromedriver if the drivers are installed and accessible in your system PATH.
+
+🚀 Running INJEX-IA  
 Once setup is complete, start the tool with:
 
 ```bash
@@ -65,15 +87,15 @@ python main.py
 You will be prompted to enter:
 
 - The target URL
-- The type of scan: **XSS**, **SQL Injection**, or **Sensitive Files**
+- The type of scan: XSS, SQL Injection, or Sensitive Files
+- The browser to use: chrome, firefox, or edge
 
----
+```
 
-## **📁 Scan Results**
-
+📁 Scan Results  
 After a scan completes, the tool will generate two important files:
 
-### **1. scan_report.json**
+1. scan_report.json  
 Contains:
 
 - All detected vulnerabilities (true positives and false positives)
@@ -81,29 +103,27 @@ Contains:
 - Affected URLs and payloads used
 
 To view:
+
 ```bash
 cat scan_report.json
 ```
 
-### **2. metrics.json**
+2. metrics.json  
 Contains:
 
 - Performance metrics of the scan
 - Data useful for AI model improvement
 
 To view:
+
 ```bash
 cat metrics.json
 ```
 
----
+📌 Notes  
+✅ Selenium-based scanning with real browser control  
+🔄 Supports Chrome, Firefox, and Edge browsers  
+🔧 Drivers are automatically managed by webdriver-manager and typically saved in /usr/local/bin  
+🛡️ Optimized for penetration testing and secure development workflows
 
-## **📌 Notes**
-
-- ✅ No driver setup required — Playwright handles browsers internally.
-- 🔁 Cross-browser support — Easily switch between Chromium, Firefox, or WebKit.
-- 🛠️ Works out of the box on Kali Linux without special configurations.
-
----
-
-**Enjoy scanning securely with INJEX-IA — Powered by Yassine Soussi.**
+Enjoy scanning securely with INJEX-IA — Powered by Yassine Soussi.

@@ -5,5 +5,5 @@ pyfiglet
 scikit-learn
 pandas
 joblib
-Playwright
+selenium
 
