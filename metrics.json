@@ -175,5 +175,51 @@
                 "support": 1.0
             }
         }
+    },
+    {
+        "timestamp": "2025-05-17T14:53:15.075508",
+        "filter_type": "xss",
+        "accuracy": 0.9590643274853801,
+        "precision": 0.9622132253711202,
+        "recall": 0.9590643274853801,
+        "f1_score": 0.9589982123768201,
+        "labels": [
+            "xss_high",
+            "xss_low",
+            "xss_medium"
+        ],
+        "classification_report": {
+            "xss_high": {
+                "precision": 0.9230769230769231,
+                "recall": 1.0,
+                "f1-score": 0.96,
+                "support": 84.0
+            },
+            "xss_low": {
+                "precision": 1.0,
+                "recall": 0.9375,
+                "f1-score": 0.967741935483871,
+                "support": 32.0
+            },
+            "xss_medium": {
+                "precision": 1.0,
+                "recall": 0.9090909090909091,
+                "f1-score": 0.9523809523809523,
+                "support": 55.0
+            },
+            "accuracy": 0.9590643274853801,
+            "macro avg": {
+                "precision": 0.9743589743589745,
+                "recall": 0.9488636363636364,
+                "f1-score": 0.9600409626216079,
+                "support": 171.0
+            },
+            "weighted avg": {
+                "precision": 0.9622132253711202,
+                "recall": 0.9590643274853801,
+                "f1-score": 0.9589982123768201,
+                "support": 171.0
+            }
+        }
     }
 ]

