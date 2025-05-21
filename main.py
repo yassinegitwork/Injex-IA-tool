@@ -24,15 +24,23 @@ def print_banner():
 def format_url(url):
     parsed_url = urlparse(url)
     if not parsed_url.scheme:
-        return "https://" + url
+        return "http://" + url  # Default to HTTP (not HTTPS)
     return url
 
 def is_valid_url(url):
-    pattern = re.compile(r"^(https?://)([a-zA-Z0-9.-]+)(\.[a-zA-Z]{2,})$")
+    pattern = re.compile(
+        r"^(https?://)"                       # http or https
+        r"(localhost|"                        # localhost
+        r"127\.0\.0\.1|"                      # loopback IP
+        r"\d{1,3}(\.\d{1,3}){3}|"             # other IP addresses
+        r"([a-zA-Z0-9.-]+\.[a-zA-Z]{2,}))"    # or domain
+        r"(:\d{1,5})?"                        # optional port
+        r"(/.*)?$"                            # optional path
+    )
     match = pattern.match(url)
     if match:
         domain = match.group(2)
-        if '...' in domain or '..' in domain:
+        if domain and ('...' in domain or '..' in domain):
             return False
         return True
     return False
@@ -43,7 +51,7 @@ def get_valid_url():
         formatted_url = format_url(url)
         if is_valid_url(formatted_url):
             return formatted_url
-        print("❌ Invalid URL format. Please enter a valid URL (e.g., https://example.com)")
+        print("❌ Invalid URL format. Please enter a valid URL (e.g., http://localhost:8080, http://127.0.0.1, or https://example.com)")
 
 def choose_scan_type():
     while True:
@@ -96,6 +104,7 @@ def main():
             break
 
     print("[*] Auto-training the model with the latest scan data...")
+    train_model()  # Trigger model retraining after all scans
 
 if __name__ == "__main__":
     main()

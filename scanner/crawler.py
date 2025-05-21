@@ -86,7 +86,7 @@ class WebCrawler:
             time.sleep(2)  # Wait before retrying
         return None
 
-    def crawl(self, max_depth=3):
+    def crawl(self, max_depth=4):
         print(f"[+] Starting to crawl {self.base_url}")
         self._crawl_url(self.base_url, 0, max_depth)
         print(f"[+] Discovered {len(self.discovered)} pages.")
@@ -102,7 +102,7 @@ class WebCrawler:
             # Use make_request() to handle the HTTP requests
             if self.driver:
                 self.driver.get(url)
-                time.sleep(1)  # wait for JS to load
+                time.sleep(6)  # wait for JS to load
                 page_source = self.driver.page_source
             else:
                 response = self.make_request(url)

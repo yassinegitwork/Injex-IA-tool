@@ -10,6 +10,7 @@ from train_model import train_model
 import concurrent.futures
 from scanner.utils import extract_forms
 
+
 class WebScanner:
     def __init__(self, url, scan_type, payloads):
         self.url = url
@@ -62,9 +63,10 @@ class WebScanner:
         try:
             payload = item["payload"]
             risk = item.get("risk", "unknown")
+            explanation = item.get("explanation", "No explanation provided")
             response = self.session.get(url, params={"q": payload}, timeout=30, verify=certifi.where())
             if payload in response.text or 'error' in response.text.lower():
-                self.log_vulnerability(url, payload, risk)
+                self.log_vulnerability(url, payload, risk, explanation)
         except requests.exceptions.RequestException as e:
             logging.info(f"[IGNORED] Could not access {url}: {e}")
 
@@ -72,11 +74,12 @@ class WebScanner:
         for item in self.payloads:
             file_path = item["payload"]
             risk = item.get("risk", "unknown")
+            explanation = item.get("explanation", "No explanation provided")
             target = urljoin(self.url, file_path)
             try:
                 response = self.session.get(target, timeout=30, verify=certifi.where())
                 if response.status_code == 200:
-                    self.log_vulnerability(target, file_path, risk)
+                    self.log_vulnerability(target, file_path, risk, explanation)
             except Exception as e:
                 logging.error(f"Failed to check {target} - {e}")
 
@@ -116,21 +119,31 @@ class WebScanner:
     def submit_form(self, form_details, base_url, item):
         payload = item["payload"]
         risk = item.get("risk", "unknown")
+        explanation = item.get("explanation", "No explanation provided")
         target_url = urljoin(base_url, form_details["action"])
-        data = {}
 
-        for input_field in form_details["inputs"]:
+        inputs = form_details["inputs"]
+
+        for target_input in inputs:
+            data = {}
+
+        # Build data: inject payload only in target_input, default values in others
+        for input_field in inputs:
             field_type = input_field["type"]
             name = input_field["name"]
-
             if not name:
                 continue
 
-            if field_type in ["text", "search", "email", "textarea"]:
-                data[name] = payload
-            elif field_type in ["checkbox", "radio"]:
-                data[name] = input_field["value"] if input_field["value"] else payload
+            if input_field == target_input:
+                # Inject payload only here
+                if field_type in ["text", "search", "email", "textarea"]:
+                    data[name] = payload
+                elif field_type in ["checkbox", "radio"]:
+                    data[name] = input_field["value"] if input_field["value"] else payload
+                else:
+                    data[name] = input_field["value"]
             else:
+                # Use default or empty value for other inputs
                 data[name] = input_field["value"]
 
         try:
@@ -140,18 +153,24 @@ class WebScanner:
                 response = self.session.get(target_url, params=data, timeout=30, verify=certifi.where())
 
             if payload in response.text:
-                self.log_vulnerability(target_url, payload, risk)
+                # Log vulnerability including which input field was tested
+                self.log_vulnerability(
+                    target_url,
+                    payload,
+                    risk,
+                    f"{explanation} (Injected in input field: '{target_input['name']}')"
+                )
         except Exception as e:
             logging.error(f"Form submission failed to {target_url} - {e}")
-
-    def log_vulnerability(self, url, payload, risk):
+    def log_vulnerability(self, url, payload, risk, explanation):
         timestamp = datetime.now().isoformat()
         entry = {
             "timestamp": timestamp,
             "url": url,
             "vulnerability": self.scan_type,
             "payload": payload,
-            "risk": risk
+            "risk": risk,
+            "explanation": explanation
         }
         self.results.append(entry)
         logging.warning(f"[VULNERABILITY] {entry}")
