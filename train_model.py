@@ -97,8 +97,6 @@ def train_model(filter_type=None):
 
         print("[+] Saved and updated metrics.json")
 
-        return accuracy
-
     except Exception as e:
         print(f"[!] Auto-train failed: {e}")
         return None
