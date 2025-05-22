@@ -19,7 +19,7 @@ def train_model(filter_type=None):
 
         entries = data["vulnerabilities"]
 
-        # ✅ Filter entries by vulnerability type if specified
+        # Filter entries by vulnerability type if specified
         if filter_type:
             entries = [entry for entry in entries if entry["vulnerability"] == filter_type]
 
@@ -40,10 +40,10 @@ def train_model(filter_type=None):
 
         y_pred = clf.predict(X_test)
 
-        # ✅ Use only labels present in this filtered dataset
+        # Use only labels present in this filtered dataset
         used_labels = sorted(set(y))  # only labels that actually appear in this scan
 
-        # ✅ Compute metrics using filtered labels
+        # Compute metrics using filtered labels
         accuracy = accuracy_score(y_test, y_pred)
         precision, recall, f1, _ = precision_recall_fscore_support(
             y_test, y_pred, average='weighted', zero_division=0
@@ -57,19 +57,19 @@ def train_model(filter_type=None):
         )
 
 
-        # ✅ Save model and vectorizer
+        # Save model and vectorizer
         joblib.dump(clf, 'vulnerability_model.pkl')
         joblib.dump(vectorizer, 'vectorizer.pkl')
         print("[+] Model and vectorizer saved successfully.")
 
-        # ✅ Save vectorizer vocabulary
+        # Save vectorizer vocabulary
         with open('vectorizer_vocab.txt', 'w', encoding='utf-8') as f:
             f.write("Vectorizer Vocabulary:\n")
             for word, index in vectorizer.vocabulary_.items():
                 f.write(f"{word}: {index}\n")
         print("[+] Saved vectorizer_vocab.txt")
 
-        # ✅ Save metrics to metrics.json
+        # Save metrics to metrics.json
         metrics_entry = {
             "timestamp": datetime.now().isoformat(),
             "filter_type": filter_type,
